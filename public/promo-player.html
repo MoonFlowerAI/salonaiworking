@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Salon Promo — MoonFlower AI</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #0d0d1a;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      font-family: 'Segoe UI', sans-serif;
+      color: #fff;
+    }
+    h1 {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #b76e79;
+      margin-bottom: 16px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .player-wrap {
+      position: relative;
+      max-width: min(900px, 96vw);
+    }
+    video {
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      background: #000;
+      display: block;
+    }
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 14px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 10px;
+      padding: 10px 16px;
+    }
+    .btn-play {
+      background: #b76e79;
+      border: none;
+      color: #fff;
+      font-size: 18px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .btn-play:hover { background: #a05060; }
+    .progress-wrap {
+      flex: 1;
+      height: 6px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 3px;
+      cursor: pointer;
+      position: relative;
+    }
+    .progress-fill {
+      height: 100%;
+      background: #b76e79;
+      border-radius: 3px;
+      width: 0%;
+      pointer-events: none;
+    }
+    .volume-wrap {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .volume-wrap span { font-size: 16px; }
+    input[type=range] {
+      width: 80px;
+      accent-color: #b76e79;
+    }
+    .time { font-size: 12px; color: #9ca3af; white-space: nowrap; }
+    .back {
+      margin-top: 20px;
+      color: #b76e79;
+      font-size: 13px;
+      text-decoration: none;
+      opacity: 0.7;
+    }
+    .back:hover { opacity: 1; }
+  </style>
+</head>
+<body>
+  <h1 id="title">Salon Promo</h1>
+  <div class="player-wrap">
+    <video id="video" playsinline preload="auto"></video>
+    <div class="controls">
+      <button class="btn-play" id="btnPlay">▶</button>
+      <div class="progress-wrap" id="progressWrap">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <span class="time" id="timeDisplay">0:00 / 0:00</span>
+      <div class="volume-wrap">
+        <span>🔊</span>
+        <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="1">
+      </div>
+    </div>
+  </div>
+  <a class="back" href="javascript:history.back()">← Back</a>
+
+  <script>
+    const params  = new URLSearchParams(window.location.search);
+    const label   = params.get('label') || 'Salon Promo';
+    const videoSrc = params.get('video') || params.get('src') || '';
+    const audioSrc = params.get('audio') || '';
+
+    document.getElementById('title').textContent = label + ' — MoonFlower AI';
+    document.title = label + ' · MoonFlower AI';
+
+    const video  = document.getElementById('video');
+    const audio  = audioSrc ? new Audio(audioSrc) : null;
+    const btnPlay = document.getElementById('btnPlay');
+    const fill    = document.getElementById('progressFill');
+    const timeEl  = document.getElementById('timeDisplay');
+    const volSlider = document.getElementById('volumeSlider');
+
+    video.src = videoSrc;
+    if (audio) {
+      audio.preload = 'auto';
+      video.muted = true; // mute video track; audio plays via Audio element
+    }
+
+    function fmt(s) {
+      const m = Math.floor(s / 60), sec = Math.floor(s % 60);
+      return m + ':' + String(sec).padStart(2, '0');
+    }
+
+    let playing = false;
+
+    function play() {
+      video.play().catch(e => console.error('video play error:', e));
+      if (audio) audio.play().catch(e => console.error('audio play error:', e));
+      btnPlay.textContent = '⏸';
+      playing = true;
+    }
+
+    function pause() {
+      video.pause();
+      if (audio) audio.pause();
+      btnPlay.textContent = '▶';
+      playing = false;
+    }
+
+    btnPlay.addEventListener('click', () => playing ? pause() : play());
+
+    video.addEventListener('timeupdate', () => {
+      if (!video.duration) return;
+      fill.style.width = (video.currentTime / video.duration * 100) + '%';
+      timeEl.textContent = fmt(video.currentTime) + ' / ' + fmt(video.duration);
+      // Drift correction only while audio is actively playing
+      if (audio && !audio.paused && Math.abs(audio.currentTime - video.currentTime) > 0.3) {
+        audio.currentTime = video.currentTime;
+      }
+    });
+
+    video.addEventListener('ended', () => {
+      if (audio) { audio.pause(); audio.currentTime = 0; }
+      btnPlay.textContent = '▶';
+      playing = false;
+    });
+
+    document.getElementById('progressWrap').addEventListener('click', (e) => {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const pct = (e.clientX - rect.left) / rect.width;
+      video.currentTime = pct * video.duration;
+      if (audio) audio.currentTime = video.currentTime;
+    });
+
+    volSlider.addEventListener('input', () => {
+      if (audio) audio.volume = volSlider.value;
+      else video.volume = volSlider.value;
+    });
+  </script>
+</body>
+</html>

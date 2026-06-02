@@ -1,0 +1,244 @@
+[
+  {
+    "id": "hair-001",
+    "name": "Haircut",
+    "category": "Hair",
+    "description": "Precision haircut tailored to your style, includes shampoo and blow-dry.",
+    "duration": 45,
+    "price": 55,
+    "addOns": [
+      { "name": "Bang Trim", "price": 10, "duration": 10 },
+      { "name": "Scalp Massage", "price": 15, "duration": 10 },
+      { "name": "Hot Towel Treatment", "price": 10, "duration": 5 }
+    ]
+  },
+  {
+    "id": "hair-002",
+    "name": "Blowout",
+    "category": "Hair",
+    "description": "Professional blowout for voluminous, silky-smooth hair that lasts.",
+    "duration": 30,
+    "price": 40,
+    "addOns": [
+      { "name": "Curling/Flat Iron Finish", "price": 15, "duration": 15 },
+      { "name": "Deep Conditioning Mask", "price": 20, "duration": 10 }
+    ]
+  },
+  {
+    "id": "hair-003",
+    "name": "Color",
+    "category": "Hair",
+    "description": "Full single-process color to refresh or transform your look.",
+    "duration": 90,
+    "price": 120,
+    "addOns": [
+      { "name": "Gloss Treatment", "price": 30, "duration": 15 },
+      { "name": "Root Touch-Up Only", "price": -40, "duration": -30 },
+      { "name": "Olaplex Treatment", "price": 35, "duration": 10 }
+    ]
+  },
+  {
+    "id": "hair-004",
+    "name": "Highlights",
+    "category": "Hair",
+    "description": "Dimensional highlights using foil technique for a natural sun-kissed look.",
+    "duration": 120,
+    "price": 160,
+    "addOns": [
+      { "name": "Partial Highlights", "price": -50, "duration": -30 },
+      { "name": "Toner", "price": 25, "duration": 15 },
+      { "name": "Olaplex Treatment", "price": 35, "duration": 10 }
+    ]
+  },
+  {
+    "id": "hair-005",
+    "name": "Balayage",
+    "category": "Hair",
+    "description": "Hand-painted balayage for a gorgeous, low-maintenance gradient effect.",
+    "duration": 150,
+    "price": 200,
+    "addOns": [
+      { "name": "Toner", "price": 25, "duration": 15 },
+      { "name": "Haircut & Style", "price": 40, "duration": 30 },
+      { "name": "Olaplex Treatment", "price": 35, "duration": 10 }
+    ]
+  },
+  {
+    "id": "hair-006",
+    "name": "Keratin Treatment",
+    "category": "Hair",
+    "description": "Smoothing keratin treatment to eliminate frizz and add brilliant shine.",
+    "duration": 180,
+    "price": 280,
+    "addOns": [
+      { "name": "Haircut", "price": 40, "duration": 30 },
+      { "name": "Deep Conditioning Boost", "price": 25, "duration": 10 }
+    ]
+  },
+  {
+    "id": "hair-007",
+    "name": "Deep Conditioning",
+    "category": "Hair",
+    "description": "Intensive deep conditioning treatment to restore moisture and repair damage.",
+    "duration": 30,
+    "price": 45,
+    "addOns": [
+      { "name": "Scalp Treatment", "price": 20, "duration": 15 },
+      { "name": "Hot Oil Add-On", "price": 15, "duration": 10 }
+    ]
+  },
+  {
+    "id": "nails-001",
+    "name": "Manicure",
+    "category": "Nails",
+    "description": "Classic manicure with nail shaping, cuticle care, and polish of your choice.",
+    "duration": 30,
+    "price": 30,
+    "addOns": [
+      { "name": "Gel Polish Upgrade", "price": 15, "duration": 10 },
+      { "name": "Paraffin Wax Dip", "price": 12, "duration": 10 },
+      { "name": "Nail Art (per nail)", "price": 5, "duration": 5 }
+    ]
+  },
+  {
+    "id": "nails-002",
+    "name": "Pedicure",
+    "category": "Nails",
+    "description": "Relaxing pedicure with foot soak, exfoliation, massage, and polish.",
+    "duration": 45,
+    "price": 45,
+    "addOns": [
+      { "name": "Gel Polish Upgrade", "price": 15, "duration": 10 },
+      { "name": "Extended Massage", "price": 15, "duration": 15 },
+      { "name": "Callus Treatment", "price": 10, "duration": 10 }
+    ]
+  },
+  {
+    "id": "nails-003",
+    "name": "Gel Nails",
+    "category": "Nails",
+    "description": "Long-lasting gel nail application with chip-resistant, high-shine finish.",
+    "duration": 60,
+    "price": 55,
+    "addOns": [
+      { "name": "Nail Art (per nail)", "price": 5, "duration": 5 },
+      { "name": "Gel Removal", "price": 10, "duration": 15 },
+      { "name": "Nail Repair (per nail)", "price": 8, "duration": 5 }
+    ]
+  },
+  {
+    "id": "nails-004",
+    "name": "Acrylic Nails",
+    "category": "Nails",
+    "description": "Full set of sculpted acrylic nails, customized to your preferred length and shape.",
+    "duration": 75,
+    "price": 65,
+    "addOns": [
+      { "name": "Nail Art (per nail)", "price": 5, "duration": 5 },
+      { "name": "Fill-In Only", "price": -25, "duration": -30 },
+      { "name": "French Tips", "price": 10, "duration": 10 }
+    ]
+  },
+  {
+    "id": "nails-005",
+    "name": "Nail Art",
+    "category": "Nails",
+    "description": "Custom nail art designs from minimalist accents to intricate hand-painted patterns.",
+    "duration": 60,
+    "price": 50,
+    "addOns": [
+      { "name": "Chrome/Mirror Finish", "price": 15, "duration": 10 },
+      { "name": "3D Embellishments", "price": 20, "duration": 15 },
+      { "name": "Stamping Design", "price": 10, "duration": 10 }
+    ]
+  },
+  {
+    "id": "skin-001",
+    "name": "Facial",
+    "category": "Skin",
+    "description": "Customized facial with deep cleansing, exfoliation, extraction, and hydrating mask.",
+    "duration": 60,
+    "price": 85,
+    "addOns": [
+      { "name": "LED Light Therapy", "price": 25, "duration": 15 },
+      { "name": "Vitamin C Boost", "price": 20, "duration": 5 },
+      { "name": "Eye Treatment", "price": 15, "duration": 10 }
+    ]
+  },
+  {
+    "id": "skin-002",
+    "name": "Chemical Peel",
+    "category": "Skin",
+    "description": "Professional-grade chemical peel to improve skin texture, tone, and clarity.",
+    "duration": 45,
+    "price": 110,
+    "addOns": [
+      { "name": "Hydrating Recovery Mask", "price": 20, "duration": 10 },
+      { "name": "SPF Application", "price": 5, "duration": 5 }
+    ]
+  },
+  {
+    "id": "skin-003",
+    "name": "Microdermabrasion",
+    "category": "Skin",
+    "description": "Non-invasive exfoliation treatment to reduce fine lines, scars, and hyperpigmentation.",
+    "duration": 45,
+    "price": 100,
+    "addOns": [
+      { "name": "Hydrating Serum Infusion", "price": 25, "duration": 10 },
+      { "name": "LED Light Therapy", "price": 25, "duration": 15 }
+    ]
+  },
+  {
+    "id": "skin-004",
+    "name": "Waxing",
+    "category": "Skin",
+    "description": "Smooth, long-lasting hair removal using premium hard or soft wax.",
+    "duration": 30,
+    "price": 35,
+    "addOns": [
+      { "name": "Soothing Aloe Application", "price": 5, "duration": 5 },
+      { "name": "Brow Shaping", "price": 15, "duration": 10 },
+      { "name": "Full Face Wax Upgrade", "price": 25, "duration": 15 }
+    ]
+  },
+  {
+    "id": "makeup-001",
+    "name": "Bridal Makeup",
+    "category": "Makeup",
+    "description": "Flawless bridal makeup application with airbrush option, includes trial consultation.",
+    "duration": 90,
+    "price": 180,
+    "addOns": [
+      { "name": "Touch-Up Kit", "price": 25, "duration": 0 },
+      { "name": "False Lashes", "price": 15, "duration": 10 },
+      { "name": "Bridesmaid Makeup", "price": 85, "duration": 45 }
+    ]
+  },
+  {
+    "id": "makeup-002",
+    "name": "Party Makeup",
+    "category": "Makeup",
+    "description": "Glamorous makeup for any special occasion, from natural elegance to bold drama.",
+    "duration": 60,
+    "price": 95,
+    "addOns": [
+      { "name": "False Lashes", "price": 15, "duration": 10 },
+      { "name": "Hairstyling", "price": 55, "duration": 30 },
+      { "name": "Shimmer/Glitter Accent", "price": 10, "duration": 5 }
+    ]
+  },
+  {
+    "id": "makeup-003",
+    "name": "Lash Extensions",
+    "category": "Makeup",
+    "description": "Individual lash extensions for a natural or dramatic look that lasts 2-3 weeks.",
+    "duration": 90,
+    "price": 150,
+    "addOns": [
+      { "name": "Volume/Mega Volume Upgrade", "price": 40, "duration": 30 },
+      { "name": "Lash Tint", "price": 20, "duration": 15 },
+      { "name": "Fill-In (2 weeks)", "price": -75, "duration": -30 }
+    ]
+  }
+]

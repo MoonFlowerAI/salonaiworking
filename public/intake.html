@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Get your salon website built by MoonFlower AI. Takes 15 minutes.">
+  <meta name="theme-color" content="#5B2C87">
+  <meta name="robots" content="noindex">
+  <title>Salon Intake · MoonFlower AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  <style>
+    :root {
+      --purple: #5B2C87;
+      --purple-dark: #3a1a5a;
+      --purple-light: #7b3fb5;
+      --gold: #D4A017;
+      --lavender: #E8DFF5;
+      --ink: #1A1A2E;
+      --cream: #faf3e0;
+      --gray-100: #f3f4f6;
+      --gray-300: #d1d5db;
+      --gray-500: #6b7280;
+      --gray-600: #4b5563;
+      --green: #059669;
+      --red: #dc2626;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Poppins', sans-serif; background: var(--cream); color: var(--ink); line-height: 1.6; }
+
+    .page { max-width: 760px; margin: 0 auto; padding: 32px 20px 80px; }
+    .nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
+    .brand { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; color: var(--purple); text-decoration: none; }
+    .brand span { color: var(--gold); }
+    .nav-link { color: var(--gray-600); text-decoration: none; font-size: 14px; font-weight: 500; }
+    .nav-link:hover { color: var(--purple); }
+
+    .progress-wrap { margin-bottom: 32px; }
+    .progress-labels { display: flex; justify-content: space-between; margin-bottom: 6px; }
+    .progress-label { font-size: 12px; color: var(--gray-500); font-weight: 500; }
+    .progress-bar-track { height: 6px; background: var(--lavender); border-radius: 999px; overflow: hidden; }
+    .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--purple), var(--gold)); border-radius: 999px; transition: width 0.4s ease; }
+
+    .step { display: none; background: white; border-radius: 16px; padding: 36px; border: 1px solid var(--lavender); box-shadow: 0 2px 16px rgba(91,44,135,0.06); }
+    .step.active { display: block; }
+    .step-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+    .step-title { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; color: var(--purple); margin-bottom: 6px; }
+    .step-subtitle { font-size: 14px; color: var(--gray-500); margin-bottom: 28px; }
+    .section-divider { border: none; border-top: 1px solid var(--lavender); margin: 28px 0; }
+
+    .field { margin-bottom: 22px; }
+    .field label { display: block; font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
+    .field label .req { color: var(--red); margin-left: 2px; }
+    .opt-tag { font-size: 11px; font-weight: 500; color: var(--gray-500); background: var(--gray-100); padding: 2px 7px; border-radius: 4px; margin-left: 6px; vertical-align: middle; }
+    .field-hint { font-size: 12px; color: var(--gray-500); margin-bottom: 8px; }
+    .field input[type="text"],
+    .field input[type="email"],
+    .field input[type="tel"],
+    .field input[type="url"],
+    .field select,
+    .field textarea {
+      width: 100%; padding: 11px 14px; border: 1.5px solid var(--gray-300); border-radius: 8px;
+      font-family: 'Poppins', sans-serif; font-size: 14px; color: var(--ink); background: white;
+      transition: border-color 0.2s; outline: none;
+    }
+    .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--purple); }
+    .field input.invalid, .field select.invalid, .field textarea.invalid { border-color: var(--red); }
+    .field textarea { resize: vertical; min-height: 90px; }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 560px) { .field-row { grid-template-columns: 1fr; } }
+
+    .choice-group { display: flex; flex-direction: column; gap: 10px; }
+    .choice-group.cols-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    @media (max-width: 540px) { .choice-group.cols-2 { grid-template-columns: 1fr; } }
+    .choice-item { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; }
+    .choice-item input[type="radio"], .choice-item input[type="checkbox"] {
+      width: 18px; height: 18px; margin-top: 2px; flex-shrink: 0; accent-color: var(--purple); cursor: pointer;
+    }
+    .choice-item span { font-size: 14px; color: var(--ink); line-height: 1.4; }
+
+    .faq-category { margin-bottom: 20px; }
+    .faq-category-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--purple); margin-bottom: 10px; }
+    .faq-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; cursor: pointer; }
+    .faq-item input { width: 16px; height: 16px; margin-top: 3px; flex-shrink: 0; accent-color: var(--purple); cursor: pointer; }
+    .faq-item span { font-size: 13px; color: var(--ink); line-height: 1.4; }
+
+    .stylist-block { background: var(--gray-100); border-radius: 12px; padding: 20px; margin-bottom: 16px; position: relative; }
+    .stylist-block-title { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--purple); margin-bottom: 16px; }
+    .stylist-remove { position: absolute; top: 14px; right: 14px; background: none; border: none; color: var(--gray-500); font-size: 18px; cursor: pointer; padding: 4px 8px; border-radius: 6px; }
+    .stylist-remove:hover { background: var(--lavender); color: var(--red); }
+    .add-stylist-btn { display: inline-flex; align-items: center; gap: 6px; background: none; border: 1.5px dashed var(--purple); color: var(--purple); font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 600; padding: 10px 20px; border-radius: 8px; cursor: pointer; transition: background 0.2s; margin-top: 4px; }
+    .add-stylist-btn:hover { background: var(--lavender); }
+
+    .custom-hours { display: none; }
+    .custom-hours.visible { display: block; }
+
+    .step-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 32px; gap: 12px; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 28px; border-radius: 999px; font-family: 'Poppins', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; border: none; transition: background 0.2s, transform 0.1s; }
+    .btn:active { transform: translateY(1px); }
+    .btn-primary { background: var(--purple); color: white; }
+    .btn-primary:hover { background: var(--purple-dark); }
+    .btn-secondary { background: white; color: var(--gray-600); border: 1.5px solid var(--gray-300); }
+    .btn-secondary:hover { border-color: var(--purple); color: var(--purple); }
+    .btn-gold { background: var(--gold); color: var(--ink); }
+    .btn-gold:hover { background: #c4920c; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .step-error { background: #fee2e2; border: 1px solid #fca5a5; border-radius: 8px; padding: 10px 14px; color: var(--red); font-size: 13px; margin-top: 16px; display: none; }
+    .step-error.visible { display: block; }
+
+    #successScreen { display: none; text-align: center; background: white; border-radius: 16px; padding: 56px 36px; border: 1px solid var(--lavender); }
+    #successScreen.visible { display: block; }
+    .success-icon { font-size: 56px; margin-bottom: 20px; }
+    .success-title { font-family: 'Playfair Display', serif; font-size: 32px; color: var(--purple); margin-bottom: 12px; }
+    .success-text { font-size: 15px; color: var(--gray-600); max-width: 480px; margin: 0 auto 24px; line-height: 1.7; }
+    .success-steps { text-align: left; background: var(--gray-100); border-radius: 12px; padding: 20px 24px; margin: 24px auto; max-width: 440px; }
+    .success-steps li { font-size: 14px; color: var(--ink); margin-bottom: 8px; padding-left: 4px; }
+
+    .hp-field { position: absolute; left: -9999px; top: -9999px; height: 1px; width: 1px; overflow: hidden; opacity: 0; pointer-events: none; }
+    .pkg-badge { display: inline-block; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 3px 8px; border-radius: 4px; margin-bottom: 16px; }
+    .pkg-badge.premium { background: var(--gold); color: var(--ink); }
+  </style>
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <a href="/" class="brand">MoonFlower<span>.</span></a>
+    <a href="/" class="nav-link">← Back</a>
+  </nav>
+
+  <div class="progress-wrap">
+    <div class="progress-labels">
+      <span class="progress-label" id="progressStepLabel">Step 1 of 12</span>
+      <span class="progress-label" id="progressSectionLabel">The Basics</span>
+    </div>
+    <div class="progress-bar-track">
+      <div class="progress-bar-fill" id="progressFill" style="width:8%"></div>
+    </div>
+  </div>
+
+  <form id="intakeForm" novalidate>
+    <input type="text" name="hp" class="hp-field" autocomplete="off" tabindex="-1" aria-hidden="true">
+
+    <!-- STEP 1: A — THE BASICS -->
+    <div class="step active" data-step="1">
+      <div class="step-eyebrow">Section A</div>
+      <h1 class="step-title">The Basics</h1>
+      <p class="step-subtitle">Who are you and how do we reach you?</p>
+
+      <div class="field">
+        <label>Salon Name <span class="req">*</span></label>
+        <input type="text" name="salonName" required placeholder="e.g., Blue Diamond Salon">
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Owner Name <span class="req">*</span></label>
+          <input type="text" name="ownerName" required placeholder="Your full name">
+        </div>
+        <div class="field">
+          <label>Your Email <span class="req">*</span></label>
+          <input type="email" name="ownerEmail" required placeholder="you@example.com">
+        </div>
+      </div>
+      <div class="field">
+        <label>Phone Number <span class="req">*</span></label>
+        <input type="tel" name="phone" required placeholder="(555) 000-0000">
+      </div>
+      <div class="field">
+        <label>Full Address <span class="req">*</span></label>
+        <div class="field-hint">Street, city, state, zip</div>
+        <input type="text" name="address" required placeholder="123 Main St, Louisville, KY 40202">
+      </div>
+
+      <hr class="section-divider">
+
+      <div class="field-row">
+        <div class="field">
+          <label>Instagram Handle <span class="opt-tag">optional</span></label>
+          <input type="text" name="instagram" placeholder="@yoursalon">
+        </div>
+        <div class="field">
+          <label>Facebook Page URL <span class="opt-tag">optional</span></label>
+          <input type="url" name="facebook" placeholder="facebook.com/yoursalon">
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>TikTok Handle <span class="opt-tag">optional</span></label>
+          <input type="text" name="tiktok" placeholder="@yoursalon">
+        </div>
+        <div class="field">
+          <label>Existing Website <span class="opt-tag">optional</span></label>
+          <input type="url" name="existingWebsite" placeholder="https://yoursalon.com">
+        </div>
+      </div>
+      <div class="field">
+        <label>Google Business Profile URL <span class="opt-tag">optional</span></label>
+        <input type="url" name="googleBusiness" placeholder="https://g.page/yoursalon">
+      </div>
+
+      <div class="step-nav">
+        <span></span>
+        <button type="button" class="btn btn-primary" onclick="nextStep()">Next &rarr;</button>
+      </div>
+      <div class="step-error" id="err1">Please fill in all required fields.</div>
+    </div>
+
+    <!-- STEP 2: B — HOURS -->
+    <div class="step" data-step="2">
+      <div class="step-eyebrow">Section B</div>
+      <h1 class="step-title">Hours</h1>
+      <p class="step-subtitle">Pick your standard schedule. Choose "Custom" if your hours vary by day.</p>
+
+      <div class="field">
+        <label>Your standard weekly schedule <span class="req">*</span></label>
+        <select name="hoursPreset" id="hoursPreset" required onchange="toggleCustomHours()">
+          <option value="">— Select —</option>
+          <option>9am–5pm, Monday through Saturday (closed Sunday)</option>
+          <option>9am–6pm, Monday through Saturday (closed Sunday)</option>
+          <option>9am–7pm, Monday through Saturday (closed Sunday)</option>
+          <option>10am–6pm, Tuesday through Saturday (closed Sun + Mon)</option>
+          <option>9am–6pm Mon–Fri, 9am–5pm Saturday, closed Sunday</option>
+          <option>9am–7pm every day including Sunday</option>
+          <option value="custom">Custom — my hours vary by day</option>
+        </select>
+      </div>
+
+      <div class="custom-hours" id="customHours">
+        <div class="field-row">
+          <div class="field"><label>Monday</label><input type="text" name="monHours" placeholder="9am–6pm or Closed"></div>
+          <div class="field"><label>Tuesday</label><input type="text" name="tueHours" placeholder="9am–6pm or Closed"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Wednesday</label><input type="text" name="wedHours" placeholder="9am–6pm or Closed"></div>
+          <div class="field"><label>Thursday</label><input type="text" name="thuHours" placeholder="9am–6pm or Closed"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Friday</label><input type="text" name="friHours" placeholder="9am–6pm or Closed"></div>
+          <div class="field"><label>Saturday</label><input type="text" name="satHours" placeholder="9am–6pm or Closed"></div>
+        </div>
+        <div class="field" style="max-width:50%">
+          <label>Sunday</label>
+          <input type="text" name="sunHours" placeholder="9am–6pm or Closed">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Any exceptions or notes? <span class="opt-tag">optional</span></label>
+        <div class="field-hint">e.g., "Closed for lunch 12–1pm" or "Closed major holidays"</div>
+        <textarea name="hoursNotes" placeholder="Leave blank if your selected schedule is accurate."></textarea>
+      </div>
+
+      <div class="step-nav">
+        <button type="button" class="btn btn-secondary" onclick="prevStep()">&larr; Back</button>
+        <button type="button" class="btn btn-primary" onclick="nextStep()">Next &rarr;</button>
+      </div>
+      <div class="step-error" id="err2">Please select your weekly schedule.</div>
+    </div>
+
+    <!-- STEP 3: C — SERVICES -->
+    <div class="step" data-step="3">
+      <div class="step-eyebrow">Section C</div>
+      <h1 class="step-title">Services</h1>
+      <p class="step-subtitle">Check every service you offer. Use the "Other" field to add anything not listed.</p>
+
+      <div class="field">
+        <label>Hair Cuts</label>
+        <div class="choice-group cols-2">
+          <label class="choice-item"><input type="checkbox" name="svc_haircuts" value="Women's Haircut & Style"><span>Women's Haircut &amp; Style</span></label>
+          <label class="choice-item"><input type="checkbox" name="svc_haircuts" value="Men's Haircut"><span>Men's Haircut</span></label>
+          <label class="choice-item"><input type="checkbox" name="svc_haircuts" value="Children's Haircut (12 & under)"><span>Children's Haircut (12 &amp; under)</span></label>
+          <label class="choice-item"><input type="checkbox" name="svc_haircuts" value="Bang Trim"><span>Bang Trim</span></label>
+          <label class="choice-item"><input type="checkbox" name="svc_haircuts" value="Beard Trim"><span>Beard Trim</span></label>
+          <label class="choice-item"><input type="checkbox" name="svc_haircuts" value="Buzz Cut"><span>Buzz Cut</span></label>
+        </div>
+      </div>
+
+      <hr class="section-divider">
+
+      <div class="field">
+        <label>Color Services</label>
+        <div class="choice-group cols-2">
+          <label class="choice-item"><input type="checkbox" name="svc_color" value="Root Retouch"><span>Root Retouch</span></label>
+          <label class="choice-item"><input type="checkbox" name="svc_color" value="Full Color / All-Over"><span>Full Color / All-Over</span></label>
+          <label class="choice-item"><input type="checkbox" name="svc_color" value="Partial Highlights"><span>Partial Highlights</span></label>
+          <label class="choice-item"><input type="checkbox" name="svc_color" value="Full Highlights"><span>Full Highlights</span></label>
+          <label class="choice-item"><input type="checkbox" name="svc_color" value="Balayage"><span>Balayage</span></label>
+          <label class="choice-item"><input type="checkbox" name="svc_color" value="Ombre"><span>Ombre</span></label>
+          <label class="choice-item"><input type="checkbox" name="svc_color" value="Color Correction"><span>Color Correction</span></label>
+          <label class="choice-item"><input type="checkbox" name="svc_color" value="Toner / Gloss"><span>Toner / Gloss</span></label>
+          <label class="choice-item"><input type="checkbox" name="svc_color" value="Vivid / Fashion Color"><span>Vivid / Fashion Color</span></label>
+          <label class="choice-item"><input type="checkbox" name="svc_color" value="Color Consultation (free)"><span>Color Consultation (free)</span></label>
+        </div>
+      </div>
+
+      <hr class="section-divider">
+
+      <div class="field">
+        <label>Treatments</label>
+        <div class="choice-group cols-2">
+          <label class="choice-item"><input type="checkbox" name="svc_treatments" value="Deep Conditioning Treatment"><span>Deep Conditioning Treatment</span></label>
+          <label class="choice-item"><input type="checkbox" name="svc_treatments" value="Olaplex Treatment"><span>Olaplex Treatment</span></label>
+          <label class="choice-item"><input type="checkbox" name="svc_treatments" value="Keratin Smoothing"><span>Keratin Smoothing</span></label>
+          <label class="choice-item"><input type="checkbox" name="svc_treatments" value="Brazilian Blowout"><span>Brazilian Blowout</span></label>
+          <label class="choice-item"><input type="checkbox" name="svc_treatments" value="Scalp Treatment"><span>Scalp Treatment</span></label>
+          <label class="choice-item"><input type="checkbox" name="svc_treatments" value="Hair Gloss"><span>Hair Gloss</span></label>
+        </div>
+      </div>
+
+      <hr class="section-divider">
+
+      <div class="field">
+        <label>Styling</label>
+        <div class="choice-group cols-2">
+          <label class="choice-item"><input type="checkbox" name="svc_styling" value="Blowout"><span>Blowout</span></label>
+          <label class="choice-item"><input type="checkbox" name="svc_styling" value="Special Occasion Style"><span>Special Occasion Style</span></label>
+          <label class="choice-item"><input type="checkbox" name="svc_styling" value="Updo"><span>Updo</span></label>
+          <label class="choice-item"><input type="checkbox" name="svc_styling" value="Bridal Trial"><span>Bridal Trial</span></label>
+          <label class="choice-item"><input type="checkbox" name="svc_styling" value="Bridal Day-Of"><span>Bridal Day-Of</span></label>
+          <label class="choice-item"><input type="checkbox" name="svc_styling" value="Prom / Homecoming"><span>Prom / Homecoming</span></label>
+        </div>
+      </div>
+
+      <hr class="section-divider">
+
+      <div class="field">
+        <label>Hair Extensions</label>
+        <div class="choice-group cols-2">
+          <label class="choice-item"><input type="checkbox" name="svc_extensions" value="Extension Consultation"><span>Extension Consultation</span></label>
+          <label class="choice-item"><input type="checkbox" name="svc_extensions" value="Extension Install"><span>Extension Install</span></label>
+          <label class="choice-item"><input type="checkbox" name="svc_extensions" value="Extension Maintenance"><span>Extension Maintenance</span></label>
+          <label class="choice-item"><input type="checkbox" name="svc_extensions" value="Extension Removal"><span>Extension Removal</span></label>
+        </div>
+      </div>
+
+      <hr class="section-divider">
+
+      <div class="field">
+        <label>Additional services not listed above <span class="opt-tag">optional</span></label>
+        <div class="field-hint">One per line. Format: Name | Duration | Price. Example: Silk Press | 90 min | $95</div>
+        <textarea name="svcCustom" placeholder="Japanese Hair Straightening | 4 hr | $400&#10;Waxing (brow) | 15 min | $15"></textarea>
+      </div>
+
+      <div class="field">
+        <label>Discounts you offer <span class="opt-tag">optional</span></label>
+        <div class="choice-group cols-2">
+          <label class="choice-item"><input type="checkbox" name="discounts" value="Senior discount (10% off)"><span>Senior discount</span></label>
+          <label class="choice-item"><input type="checkbox" name="discounts" value="Student discount (10% off)"><span>Student discount</span></label>
+          <label class="choice-item"><input type="checkbox" name="discounts" value="Military / First responder discount"><span>Military / First responder</span></label>
+          <label class="choice-item"><input type="checkbox" name="discounts" value="First-time client discount"><span>First-time client discount</span></label>
+          <label class="choice-item"><input type="checkbox" name="discounts" value="Package deals"><span>Package deals</span></label>
+          <label class="choice-item"><input type="checkbox" name="discounts" value="No discounts offered"><span>No discounts</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Discount details <span class="opt-tag">optional</span></label>
+        <input type="text" name="discountDetails" placeholder="e.g., Senior 15% off Tuesdays only">
+      </div>
+
+      <div class="step-nav">
+        <button type="button" class="btn btn-secondary" onclick="prevStep()">&larr; Back</button>
+        <button type="button" class="btn btn-primary" onclick="nextStep()">Next &rarr;</button>
+      </div>
+    </div>
+
+    <!-- STEP 4: D — TEAM -->
+    <div class="step" data-step="4">
+      <div class="step-eyebrow">Section D</div>
+      <h1 class="step-title">Your Team</h1>
+      <p class="step-subtitle">Tell us about your stylists. Upload headshots to your photo folder named by stylist (e.g., jessica.jpg).</p>
+
+      <div class="field">
+        <label>How many stylists / team members do you have? <span class="req">*</span></label>
+        <select name="teamSize" id="teamSizeSelect" required onchange="onTeamSizeChange()">
+          <option value="">— Select —</option>
+          <option>1 (just me)</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+          <option>6</option>
+          <option>7–10</option>
+          <option>11+</option>
+        </select>
+      </div>
+
+      <hr class="section-divider">
+
+      <div id="stylistBlocks"></div>
+      <button type="button" class="add-stylist-btn" id="addStylistBtn" onclick="addStylist()" style="display:none">+ Add Stylist</button>
+
+      <hr class="section-divider">
+
+      <div class="field">
+        <label>Additional stylists beyond 6 <span class="opt-tag">optional</span></label>
+        <div class="field-hint">Format: Name | Title | Specialties | Years | Bio (one per line)</div>
+        <textarea name="extraStylists" placeholder="Jamie Patel | Senior Stylist | Balayage, Vivid Color | 6 years | Jamie loves bold color."></textarea>
+      </div>
+
+      <div class="step-nav">
+        <button type="button" class="btn btn-secondary" onclick="prevStep()">&larr; Back</button>
+        <button type="button" class="btn btn-primary" onclick="nextStep()">Next &rarr;</button>
+      </div>
+      <div class="step-error" id="err4">Please select your team size.</div>
+    </div>
+
+    <!-- STEP 5: E — BRAND & VIBE -->
+    <div class="step" data-step="5">
+      <div class="step-eyebrow">Section E</div>
+      <h1 class="step-title">Brand &amp; Vibe</h1>
+      <p class="step-subtitle">How should your site feel?</p>
+
+      <div class="field">
+        <label>Do you have a logo? <span class="req">*</span></label>
+        <div class="choice-group">
+          <label class="choice-item"><input type="radio" name="logo" value="Yes — I'll attach it" required><span>Yes. I'll include it in my photo folder.</span></label>
+          <label class="choice-item"><input type="radio" name="logo" value="No — please design one for me"><span>No. Please design one for me.</span></label>
+          <label class="choice-item"><input type="radio" name="logo" value="Use text only for now"><span>Use text only for now.</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Brand colors <span class="req">*</span></label>
+        <div class="choice-group cols-2">
+          <label class="choice-item"><input type="radio" name="brandColors" value="Purple / elegant" required><span>Purple / elegant</span></label>
+          <label class="choice-item"><input type="radio" name="brandColors" value="Pink / feminine"><span>Pink / feminine</span></label>
+          <label class="choice-item"><input type="radio" name="brandColors" value="Blue / clean"><span>Blue / clean</span></label>
+          <label class="choice-item"><input type="radio" name="brandColors" value="Gold / luxury"><span>Gold / luxury</span></label>
+          <label class="choice-item"><input type="radio" name="brandColors" value="Black & white / modern"><span>Black &amp; white / modern</span></label>
+          <label class="choice-item"><input type="radio" name="brandColors" value="Earthy / natural"><span>Earthy / natural</span></label>
+          <label class="choice-item"><input type="radio" name="brandColors" value="I have specific hex codes"><span>I have specific hex codes</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Specific hex codes <span class="opt-tag">optional</span></label>
+        <input type="text" name="hexCodes" placeholder="e.g., #5B2C87, #D4A017">
+      </div>
+
+      <div class="field">
+        <label>Website vibe <span class="req">*</span></label>
+        <div class="choice-group cols-2">
+          <label class="choice-item"><input type="radio" name="vibe" value="Modern & minimal" required><span>Modern &amp; minimal</span></label>
+          <label class="choice-item"><input type="radio" name="vibe" value="Luxurious & elegant"><span>Luxurious &amp; elegant</span></label>
+          <label class="choice-item"><input type="radio" name="vibe" value="Warm & friendly"><span>Warm &amp; friendly</span></label>
+          <label class="choice-item"><input type="radio" name="vibe" value="Bold & playful"><span>Bold &amp; playful</span></label>
+          <label class="choice-item"><input type="radio" name="vibe" value="Clinical / medical spa"><span>Clinical / medical spa</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Tone of voice <span class="req">*</span></label>
+        <div class="choice-group cols-2">
+          <label class="choice-item"><input type="radio" name="tone" value="Professional" required><span>Professional</span></label>
+          <label class="choice-item"><input type="radio" name="tone" value="Friendly"><span>Friendly</span></label>
+          <label class="choice-item"><input type="radio" name="tone" value="Playful"><span>Playful</span></label>
+          <label class="choice-item"><input type="radio" name="tone" value="Luxury"><span>Luxury</span></label>
+          <label class="choice-item"><input type="radio" name="tone" value="Approachable"><span>Approachable</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Tagline or one-line description <span class="opt-tag">optional</span></label>
+        <input type="text" name="tagline" placeholder="e.g., Where Beauty Meets Excellence">
+      </div>
+
+      <div class="field">
+        <label>3 salon websites you admire <span class="opt-tag">optional</span></label>
+        <div class="field-hint">Share URLs or names. Helps us nail your style.</div>
+        <textarea name="inspiredBy" placeholder="1. salon-example.com&#10;2. ...&#10;3. ..."></textarea>
+      </div>
+
+      <div class="field">
+        <label>Link to your photo folder <span class="opt-tag">optional</span></label>
+        <div class="field-hint">Google Drive or Dropbox. Include exterior, interior, team, and work samples. Set sharing to "Anyone with the link can view."</div>
+        <input type="url" name="photoFolder" placeholder="https://drive.google.com/...">
+      </div>
+
+      <div class="step-nav">
+        <button type="button" class="btn btn-secondary" onclick="prevStep()">&larr; Back</button>
+        <button type="button" class="btn btn-primary" onclick="nextStep()">Next &rarr;</button>
+      </div>
+      <div class="step-error" id="err5">Please answer the required questions.</div>
+    </div>
+
+    <!-- STEP 6: F — POLICIES -->
+    <div class="step" data-step="6">
+      <div class="step-eyebrow">Section F</div>
+      <h1 class="step-title">Policies</h1>
+      <p class="step-subtitle">Quick — mostly dropdowns.</p>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Cancellation notice required <span class="req">*</span></label>
+          <select name="cancelNotice" required>
+            <option value="">— Select —</option>
+            <option>24 hours</option>
+            <option>48 hours</option>
+            <option>No policy</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>No-show / late cancel fee <span class="req">*</span></label>
+          <select name="noShowFee" required>
+            <option value="">— Select —</option>
+            <option>No fee</option>
+            <option>25% of service price</option>
+            <option>50% of service price</option>
+            <option>Full price</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Deposit required? <span class="req">*</span></label>
+          <select name="deposit" required>
+            <option value="">— Select —</option>
+            <option>No deposits</option>
+            <option>Yes — for color services only</option>
+            <option>Yes — new clients only</option>
+            <option>Yes — all bookings</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Deposit amount <span class="req">*</span></label>
+          <select name="depositAmount" required>
+            <option value="">— Select —</option>
+            <option>20% of service</option>
+            <option>$25 flat</option>
+            <option>$50 flat</option>
+            <option>Not applicable</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Children welcome? <span class="req">*</span></label>
+          <select name="children" required>
+            <option value="">— Select —</option>
+            <option>Yes — all ages</option>
+            <option>Yes — 12 and under discount available</option>
+            <option>Yes — during their own appointment only</option>
+            <option>No children in salon</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Pets <span class="req">*</span></label>
+          <select name="pets" required>
+            <option value="">— Select —</option>
+            <option>Service animals only</option>
+            <option>All pets welcome</option>
+            <option>No pets</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Walk-ins <span class="req">*</span></label>
+        <select name="walkIns" required>
+          <option value="">— Select —</option>
+          <option>Never — appointment only</option>
+          <option>Sometimes — call first</option>
+          <option>Yes — specific days only</option>
+          <option>Yes — always welcome</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Payment methods accepted <span class="req">*</span></label>
+        <div class="choice-group cols-2">
+          <label class="choice-item"><input type="checkbox" name="payment" value="Cash"><span>Cash</span></label>
+          <label class="choice-item"><input type="checkbox" name="payment" value="Credit card"><span>Credit card</span></label>
+          <label class="choice-item"><input type="checkbox" name="payment" value="Debit card"><span>Debit card</span></label>
+          <label class="choice-item"><input type="checkbox" name="payment" value="Venmo"><span>Venmo</span></label>
+          <label class="choice-item"><input type="checkbox" name="payment" value="Zelle"><span>Zelle</span></label>
+          <label class="choice-item"><input type="checkbox" name="payment" value="Apple Pay"><span>Apple Pay</span></label>
+          <label class="choice-item"><input type="checkbox" name="payment" value="Google Pay"><span>Google Pay</span></label>
+          <label class="choice-item"><input type="checkbox" name="payment" value="Tap to pay"><span>Tap to pay</span></label>
+        </div>
+      </div>
+
+      <div class="step-nav">
+        <button type="button" class="btn btn-secondary" onclick="prevStep()">&larr; Back</button>
+        <button type="button" class="btn btn-primary" onclick="nextStep()">Next &rarr;</button>
+      </div>
+      <div class="step-error" id="err6">Please complete all required policy fields.</div>
+    </div>
+
+    <!-- STEP 7: G — AI CHATBOT -->
+    <div class="step" data-step="7">
+      <div class="step-eyebrow">Section G</div>
+      <h1 class="step-title">AI Chatbot Personality</h1>
+      <p class="step-subtitle">Your 24/7 virtual assistant on your website.</p>
+
+      <div class="field">
+        <label>Bot name preference <span class="req">*</span></label>
+        <div class="choice-group cols-2">
+          <label class="choice-item"><input type="radio" name="botName" value="Luna" required><span>Luna</span></label>
+          <label class="choice-item"><input type="radio" name="botName" value="Ava"><span>Ava</span></label>
+          <label class="choice-item"><input type="radio" name="botName" value="Bloom"><span>Bloom</span></label>
+          <label class="choice-item"><input type="radio" name="botName" value="Salon name (e.g., Blue Diamond Assistant)"><span>Use my salon name</span></label>
+          <label class="choice-item"><input type="radio" name="botName" value="Other"><span>Other (enter below)</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Other bot name <span class="opt-tag">optional</span></label>
+        <input type="text" name="botNameCustom" placeholder="e.g., Stella">
+      </div>
+
+      <div class="field">
+        <label>Bot personality <span class="req">*</span></label>
+        <div class="choice-group cols-2">
+          <label class="choice-item"><input type="radio" name="botPersonality" value="Warm & friendly" required><span>Warm &amp; friendly</span></label>
+          <label class="choice-item"><input type="radio" name="botPersonality" value="Professional & concise"><span>Professional &amp; concise</span></label>
+          <label class="choice-item"><input type="radio" name="botPersonality" value="Quirky & playful"><span>Quirky &amp; playful</span></label>
+          <label class="choice-item"><input type="radio" name="botPersonality" value="Luxurious & refined"><span>Luxurious &amp; refined</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>When bot can't answer, route customer to <span class="req">*</span></label>
+        <select name="botEscalation" required>
+          <option value="">— Select —</option>
+          <option>Call salon phone</option>
+          <option>Text owner directly</option>
+          <option>Email the salon</option>
+          <option>Leave a voicemail</option>
+        </select>
+      </div>
+
+      <div class="step-nav">
+        <button type="button" class="btn btn-secondary" onclick="prevStep()">&larr; Back</button>
+        <button type="button" class="btn btn-primary" onclick="nextStep()">Next &rarr;</button>
+      </div>
+      <div class="step-error" id="err7">Please answer all required questions.</div>
+    </div>
+
+    <!-- STEP 8: H — FAQ LIBRARY -->
+    <div class="step" data-step="8">
+      <div class="step-eyebrow">Section H</div>
+      <h1 class="step-title">FAQ Library</h1>
+      <p class="step-subtitle">Check the FAQs you want live on your website and chatbot. We'll have pre-written answers ready — you can customize them at kickoff.</p>
+
+      <div class="faq-category">
+        <div class="faq-category-title">Booking &amp; Scheduling</div>
+        <label class="faq-item"><input type="checkbox" name="faqs" value="How do I book an appointment?"><span>How do I book an appointment?</span></label>
+        <label class="faq-item"><input type="checkbox" name="faqs" value="Can I book for someone else?"><span>Can I book for someone else?</span></label>
+        <label class="faq-item"><input type="checkbox" name="faqs" value="What if I need to cancel or reschedule?"><span>What if I need to cancel or reschedule?</span></label>
+        <label class="faq-item"><input type="checkbox" name="faqs" value="Do you accept walk-ins?"><span>Do you accept walk-ins?</span></label>
+        <label class="faq-item"><input type="checkbox" name="faqs" value="How far in advance can I book?"><span>How far in advance can I book?</span></label>
+      </div>
+
+      <div class="faq-category">
+        <div class="faq-category-title">Services &amp; Pricing</div>
+        <label class="faq-item"><input type="checkbox" name="faqs" value="How much do your services cost?"><span>How much do your services cost?</span></label>
+        <label class="faq-item"><input type="checkbox" name="faqs" value="Do you offer consultations?"><span>Do you offer consultations?</span></label>
+        <label class="faq-item"><input type="checkbox" name="faqs" value="What's the difference between balayage, highlights, and a full color?"><span>What's the difference between balayage, highlights, and a full color?</span></label>
+        <label class="faq-item"><input type="checkbox" name="faqs" value="Do you offer kids' haircuts?"><span>Do you offer kids' haircuts?</span></label>
+        <label class="faq-item"><input type="checkbox" name="faqs" value="Do you offer men's haircuts?"><span>Do you offer men's haircuts?</span></label>
+        <label class="faq-item"><input type="checkbox" name="faqs" value="Do you do bridal or special occasion styling?"><span>Do you do bridal or special occasion styling?</span></label>
+        <label class="faq-item"><input type="checkbox" name="faqs" value="Can you match a photo I bring in?"><span>Can you match a photo I bring in?</span></label>
+      </div>
+
+      <div class="faq-category">
+        <div class="faq-category-title">Products &amp; Ingredients</div>
+        <label class="faq-item"><input type="checkbox" name="faqs" value="What products do you use?"><span>What products do you use?</span></label>
+        <label class="faq-item"><input type="checkbox" name="faqs" value="Are your products vegan or cruelty-free?"><span>Are your products vegan or cruelty-free?</span></label>
+        <label class="faq-item"><input type="checkbox" name="faqs" value="Can I buy products to take home?"><span>Can I buy products to take home?</span></label>
+      </div>
+
+      <div class="faq-category">
+        <div class="faq-category-title">Visit Logistics</div>
+        <label class="faq-item"><input type="checkbox" name="faqs" value="Where are you located?"><span>Where are you located?</span></label>
+        <label class="faq-item"><input type="checkbox" name="faqs" value="Is there parking?"><span>Is there parking?</span></label>
+        <label class="faq-item"><input type="checkbox" name="faqs" value="What should I expect at my first visit?"><span>What should I expect at my first visit?</span></label>
+        <label class="faq-item"><input type="checkbox" name="faqs" value="How long will my appointment take?"><span>How long will my appointment take?</span></label>
+        <label class="faq-item"><input type="checkbox" name="faqs" value="What if I'm running late?"><span>What if I'm running late?</span></label>
+      </div>
+
+      <div class="faq-category">
+        <div class="faq-category-title">Payment &amp; Policies</div>
+        <label class="faq-item"><input type="checkbox" name="faqs" value="What forms of payment do you accept?"><span>What forms of payment do you accept?</span></label>
+        <label class="faq-item"><input type="checkbox" name="faqs" value="Do I need to pay a deposit?"><span>Do I need to pay a deposit?</span></label>
+        <label class="faq-item"><input type="checkbox" name="faqs" value="Do you offer refunds?"><span>Do you offer refunds?</span></label>
+        <label class="faq-item"><input type="checkbox" name="faqs" value="Is tipping expected?"><span>Is tipping expected?</span></label>
+      </div>
+
+      <div class="faq-category">
+        <div class="faq-category-title">Hair Care</div>
+        <label class="faq-item"><input type="checkbox" name="faqs" value="How often should I get a haircut?"><span>How often should I get a haircut?</span></label>
+        <label class="faq-item"><input type="checkbox" name="faqs" value="How long does color last?"><span>How long does color last?</span></label>
+        <label class="faq-item"><input type="checkbox" name="faqs" value="How do I make my color last longer?"><span>How do I make my color last longer?</span></label>
+        <label class="faq-item"><input type="checkbox" name="faqs" value="Should I wash my hair before my appointment?"><span>Should I wash my hair before my appointment?</span></label>
+      </div>
+
+      <div class="faq-category">
+        <div class="faq-category-title">Gift Cards &amp; Referrals</div>
+        <label class="faq-item"><input type="checkbox" name="faqs" value="Do you sell gift cards?"><span>Do you sell gift cards?</span></label>
+        <label class="faq-item"><input type="checkbox" name="faqs" value="Do you have a referral program?"><span>Do you have a referral program?</span></label>
+      </div>
+
+      <hr class="section-divider">
+
+      <div class="field">
+        <label>Any FAQ answers you want changed from the defaults? <span class="opt-tag">optional</span></label>
+        <div class="field-hint">Format: "FAQ: [your replacement answer]" — one per line.</div>
+        <textarea name="faqOverrides" placeholder="How do I book an appointment?: Call us or text (555) 000-0000 — we'll get you set up."></textarea>
+      </div>
+      <div class="field">
+        <label>Custom FAQ 1 — Question <span class="opt-tag">optional</span></label>
+        <input type="text" name="customFaq1q" placeholder="e.g., Do you offer Saturday walk-ins for bridal parties?">
+      </div>
+      <div class="field">
+        <label>Custom FAQ 1 — Answer <span class="opt-tag">optional</span></label>
+        <textarea name="customFaq1a" placeholder="Keep it 2–3 sentences. Warm tone."></textarea>
+      </div>
+      <div class="field">
+        <label>Custom FAQ 2 — Question <span class="opt-tag">optional</span></label>
+        <input type="text" name="customFaq2q">
+      </div>
+      <div class="field">
+        <label>Custom FAQ 2 — Answer <span class="opt-tag">optional</span></label>
+        <textarea name="customFaq2a"></textarea>
+      </div>
+      <div class="field">
+        <label>More than 2 custom FAQs? Paste them here <span class="opt-tag">optional</span></label>
+        <div class="field-hint">Format: Q: question / A: answer (one pair per line)</div>
+        <textarea name="extraFaqs"></textarea>
+      </div>
+
+      <div class="step-nav">
+        <button type="button" class="btn btn-secondary" onclick="prevStep()">&larr; Back</button>
+        <button type="button" class="btn btn-primary" onclick="nextStep()">Next &rarr;</button>
+      </div>
+    </div>
+
+    <!-- STEP 9: I — EMAIL & SMS -->
+    <div class="step" data-step="9">
+      <div class="step-eyebrow">Section I</div>
+      <h1 class="step-title">Email &amp; SMS Automation</h1>
+      <p class="step-subtitle">All flows included in Pro and Premium packages. Pick which to turn on.</p>
+
+      <div class="field">
+        <label>Which automated flows do you want? <span class="req">*</span></label>
+        <div class="choice-group">
+          <label class="choice-item"><input type="checkbox" name="autoFlows" value="Booking Confirmation (instant)"><span>Booking Confirmation (instant)</span></label>
+          <label class="choice-item"><input type="checkbox" name="autoFlows" value="24-Hour Reminder (email + SMS)"><span>24-Hour Reminder (email + SMS)</span></label>
+          <label class="choice-item"><input type="checkbox" name="autoFlows" value="2-Hour SMS Reminder"><span>2-Hour SMS Reminder</span></label>
+          <label class="choice-item"><input type="checkbox" name="autoFlows" value="Post-Appointment Thank You + Review Request"><span>Post-Appointment Thank You + Review Request</span></label>
+          <label class="choice-item"><input type="checkbox" name="autoFlows" value="6-Week Win-Back (color, cuts)"><span>6-Week Win-Back (color, cuts)</span></label>
+          <label class="choice-item"><input type="checkbox" name="autoFlows" value="Birthday Email with Discount"><span>Birthday Email with Discount</span></label>
+          <label class="choice-item"><input type="checkbox" name="autoFlows" value="Monthly Newsletter / Promos"><span>Monthly Newsletter / Promos</span></label>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Referral reward amount <span class="req">*</span></label>
+          <select name="referralReward" required>
+            <option value="">— Select —</option>
+            <option>$10 off each (referrer and new client)</option>
+            <option>$20 off each</option>
+            <option>$25 off each</option>
+            <option>No referral program</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Birthday discount <span class="req">*</span></label>
+          <select name="birthdayDiscount" required>
+            <option value="">— Select —</option>
+            <option>$20 off any service</option>
+            <option>$25 off</option>
+            <option>Free add-on (blowout, treatment)</option>
+            <option>No birthday offer</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Any standing promotions <span class="opt-tag">optional</span></label>
+        <input type="text" name="promos" placeholder="e.g., New client gets 20% off first color">
+      </div>
+
+      <div class="field">
+        <label>SMS sending window <span class="req">*</span></label>
+        <div class="field-hint">Messages will NOT send outside these hours. 8 AM to 9 PM is the TCPA-compliant standard.</div>
+        <select name="smsWindow" required>
+          <option value="">— Select —</option>
+          <option>8 AM – 9 PM (recommended — TCPA-compliant)</option>
+          <option>9 AM – 8 PM (more conservative)</option>
+          <option>7 AM – 10 PM (early/late texts OK)</option>
+          <option>Custom window (tell us below)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Custom SMS window <span class="opt-tag">optional</span></label>
+        <input type="text" name="smsWindowCustom" placeholder="e.g., 10 AM to 7 PM weekdays, 11 AM to 5 PM weekends">
+      </div>
+
+      <div class="step-nav">
+        <button type="button" class="btn btn-secondary" onclick="prevStep()">&larr; Back</button>
+        <button type="button" class="btn btn-primary" onclick="nextStep()">Next &rarr;</button>
+      </div>
+      <div class="step-error" id="err9">Please complete all required fields.</div>
+    </div>
+
+    <!-- STEP 10: J — VOICE BOT -->
+    <div class="step" data-step="10">
+      <div class="step-eyebrow">Section J</div>
+      <h1 class="step-title">AI Voice Bot</h1>
+      <span class="pkg-badge premium">Premium package only</span>
+      <p class="step-subtitle">Skip this section if not interested — just click Next.</p>
+
+      <div class="field">
+        <label>Do you want an AI phone receptionist?</label>
+        <div class="choice-group">
+          <label class="choice-item"><input type="radio" name="voiceBot" value="Yes, definitely"><span>Yes, definitely</span></label>
+          <label class="choice-item"><input type="radio" name="voiceBot" value="No, not now"><span>No, not now</span></label>
+          <label class="choice-item"><input type="radio" name="voiceBot" value="Not sure — let's discuss at kickoff"><span>Not sure. Let's discuss at kickoff.</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Voice preference <span class="opt-tag">optional</span></label>
+        <select name="voicePreference">
+          <option value="">— Select —</option>
+          <option>Female, warm</option>
+          <option>Female, professional</option>
+          <option>Male, warm</option>
+          <option>Male, professional</option>
+          <option>Either / no preference</option>
+        </select>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Current business phone number <span class="opt-tag">optional</span></label>
+          <div class="field-hint">We'll set up forwarding to the bot.</div>
+          <input type="tel" name="businessPhone" placeholder="(555) 000-0000">
+        </div>
+        <div class="field">
+          <label>Forwarding number for calls bot can't handle <span class="opt-tag">optional</span></label>
+          <div class="field-hint">Usually the owner's cell.</div>
+          <input type="tel" name="forwardPhone" placeholder="(555) 000-0000">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Languages needed <span class="opt-tag">optional</span></label>
+        <select name="voiceLang">
+          <option value="">— Select —</option>
+          <option>English only</option>
+          <option>English + Spanish</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <div class="step-nav">
+        <button type="button" class="btn btn-secondary" onclick="prevStep()">&larr; Back</button>
+        <button type="button" class="btn btn-primary" onclick="nextStep()">Next &rarr;</button>
+      </div>
+    </div>
+
+    <!-- STEP 11: K — WHAT YOU HAVE -->
+    <div class="step" data-step="11">
+      <div class="step-eyebrow">Section K</div>
+      <h1 class="step-title">What Do You Already Have?</h1>
+      <p class="step-subtitle">Check what you have — we'll help with the rest.</p>
+
+      <div class="field">
+        <label>Accounts you already have <span class="opt-tag">optional</span></label>
+        <div class="choice-group cols-2">
+          <label class="choice-item"><input type="checkbox" name="existing" value="Domain name registered"><span>Domain name registered</span></label>
+          <label class="choice-item"><input type="checkbox" name="existing" value="Google Business Profile"><span>Google Business Profile</span></label>
+          <label class="choice-item"><input type="checkbox" name="existing" value="Google Analytics"><span>Google Analytics</span></label>
+          <label class="choice-item"><input type="checkbox" name="existing" value="Instagram login"><span>Instagram login</span></label>
+          <label class="choice-item"><input type="checkbox" name="existing" value="Facebook login"><span>Facebook login</span></label>
+          <label class="choice-item"><input type="checkbox" name="existing" value="Stripe account (for deposits)"><span>Stripe account (for deposits)</span></label>
+          <label class="choice-item"><input type="checkbox" name="existing" value="Previous website (for migration)"><span>Previous website (for migration)</span></label>
+          <label class="choice-item"><input type="checkbox" name="existing" value="Current booking software (for migration)"><span>Current booking software (for migration)</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Software / systems you currently use <span class="opt-tag">optional</span></label>
+        <div class="field-hint">e.g., Vagaro, Square Appointments, GlossGenius, Mindbody, nothing yet</div>
+        <textarea name="currentSoftware" placeholder="We're currently using..."></textarea>
+      </div>
+
+      <div class="step-nav">
+        <button type="button" class="btn btn-secondary" onclick="prevStep()">&larr; Back</button>
+        <button type="button" class="btn btn-primary" onclick="nextStep()">Next &rarr;</button>
+      </div>
+    </div>
+
+    <!-- STEP 12: L — GOALS -->
+    <div class="step" data-step="12">
+      <div class="step-eyebrow">Section L</div>
+      <h1 class="step-title">Your Goals</h1>
+      <p class="step-subtitle">Almost done.</p>
+
+      <div class="field">
+        <label>The #1 thing you want this website to do <span class="opt-tag">optional</span></label>
+        <div class="field-hint">e.g., "Book more clients," "Stop taking booking calls myself," "Look as professional as the big chains"</div>
+        <textarea name="goal1" placeholder="The most important thing is..."></textarea>
+      </div>
+
+      <div class="field">
+        <label>Your biggest frustration with your current website or setup <span class="opt-tag">optional</span></label>
+        <textarea name="frustration" placeholder="Right now the biggest problem is..."></textarea>
+      </div>
+
+      <div class="field">
+        <label>What would make you say "this was the best money I've ever spent" 6 months from now? <span class="opt-tag">optional</span></label>
+        <textarea name="successVision" placeholder="I'd be thrilled if..."></textarea>
+      </div>
+
+      <div class="field">
+        <label>Anything else we should know? <span class="opt-tag">optional</span></label>
+        <textarea name="anythingElse" placeholder="Special requests, deadlines, or context that would help us build better."></textarea>
+      </div>
+
+      <div class="step-nav">
+        <button type="button" class="btn btn-secondary" onclick="prevStep()">&larr; Back</button>
+        <div id="turnstile-widget" style="margin-bottom:12px;"></div>
+        <button type="button" class="btn btn-gold" id="submitBtn" onclick="submitForm()">Submit Intake</button>
+      </div>
+      <div class="step-error" id="err12">Something went wrong. Please try again.</div>
+    </div>
+
+  </form>
+
+  <!-- Success screen -->
+  <div id="successScreen">
+    <div class="success-icon">🎉</div>
+    <h2 class="success-title">We've got your intake!</h2>
+    <p class="success-text">Thanks for taking the time. Expect a reply within 24 hours with your next steps.</p>
+    <ol class="success-steps">
+      <li>A link to book your 60-minute kickoff call</li>
+      <li>Your contract for signature</li>
+      <li>An invoice for the deposit</li>
+    </ol>
+    <p class="success-text" style="margin-top:16px;">Questions? Email <a href="mailto:hello@moonflowerai.com" style="color:var(--purple)">hello@moonflowerai.com</a> anytime.</p>
+    <a href="/" class="btn btn-primary" style="margin-top:8px;">Back to home</a>
+  </div>
+
+  <footer style="text-align:center;margin-top:48px;padding-top:24px;border-top:1px solid var(--lavender);color:var(--gray-500);font-size:13px;">
+    <p>MoonFlower AI &nbsp;·&nbsp; Louisville, KY &nbsp;·&nbsp; <a href="mailto:hello@moonflowerai.com" style="color:var(--gray-600)">hello@moonflowerai.com</a></p>
+  </footer>
+</div>
+
+<script>
+  // Cloudflare Turnstile — renders only when TURNSTILE_SITE_KEY is injected by server
+  // Falls back gracefully when not configured (server skips verification too)
+  const TURNSTILE_SITE_KEY = document.querySelector('meta[name="turnstile-site-key"]')?.content || '';
+  let _turnstileToken = '';
+  if (TURNSTILE_SITE_KEY) {
+    window.addEventListener('load', () => {
+      if (typeof turnstile !== 'undefined') {
+        turnstile.render('#turnstile-widget', {
+          sitekey: TURNSTILE_SITE_KEY,
+          callback: (token) => { _turnstileToken = token; },
+          'expired-callback': () => { _turnstileToken = ''; },
+        });
+      }
+    });
+  }
+
+  const TOTAL_STEPS = 12;
+  let currentStep = 1;
+  let stylistCount = 0;
+
+  const STEP_LABELS = [
+    '', 'The Basics', 'Hours', 'Services', 'Your Team',
+    'Brand & Vibe', 'Policies', 'AI Chatbot', 'FAQ Library',
+    'Email & SMS', 'Voice Bot', 'What You Have', 'Goals'
+  ];
+
+  const TITLE_OPTIONS = ['Owner / Founder','Master Stylist','Senior Stylist','Stylist','Junior Stylist','Color Specialist','Extension Specialist','Barber','Apprentice','Makeup Artist','Nail Technician','Esthetician','Receptionist / Salon Coordinator','Other'];
+  const SPECIALTY_OPTIONS = ["Women's Cuts","Men's Cuts","Children's Cuts","Balayage","Highlights","Full Color","Color Correction","Vivid / Fashion Color","Bridal & Special Occasion","Keratin / Smoothing Treatments","Hair Extensions","Blowouts & Styling","Curly / Textured Hair","Short Hair / Precision Cuts","Men's Grooming & Beard Work"];
+  const EXP_OPTIONS = ['Less than 1 year','1–3 years','4–7 years','8–15 years','15+ years'];
+
+  function showStep(n) {
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.step-error').forEach(e => e.classList.remove('visible'));
+    const target = document.querySelector(`.step[data-step="${n}"]`);
+    if (target) target.classList.add('active');
+    const pct = Math.round((n / TOTAL_STEPS) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressStepLabel').textContent = `Step ${n} of ${TOTAL_STEPS}`;
+    document.getElementById('progressSectionLabel').textContent = STEP_LABELS[n] || '';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    currentStep = n;
+  }
+
+  function validateStep(n) {
+    const step = document.querySelector(`.step[data-step="${n}"]`);
+    let valid = true;
+    step.querySelectorAll('[required]').forEach(el => {
+      el.classList.remove('invalid');
+      if (!el.value.trim()) { el.classList.add('invalid'); valid = false; }
+    });
+    const radioGroups = {};
+    step.querySelectorAll('input[type="radio"][required]').forEach(r => {
+      radioGroups[r.name] = radioGroups[r.name] || [];
+      radioGroups[r.name].push(r);
+    });
+    Object.values(radioGroups).forEach(radios => {
+      if (!radios.some(r => r.checked)) valid = false;
+    });
+    return valid;
+  }
+
+  function nextStep() {
+    if (!validateStep(currentStep)) {
+      const err = document.getElementById(`err${currentStep}`);
+      if (err) err.classList.add('visible');
+      return;
+    }
+    if (currentStep < TOTAL_STEPS) showStep(currentStep + 1);
+  }
+
+  function prevStep() {
+    if (currentStep > 1) showStep(currentStep - 1);
+  }
+
+  function toggleCustomHours() {
+    const val = document.getElementById('hoursPreset').value;
+    document.getElementById('customHours').classList.toggle('visible', val === 'custom');
+  }
+
+  function onTeamSizeChange() {
+    const val = document.getElementById('teamSizeSelect').value;
+    const num = val === '1 (just me)' ? 1
+               : val === '7–10' || val === '11+' ? 6
+               : parseInt(val) || 0;
+    const container = document.getElementById('stylistBlocks');
+    container.innerHTML = '';
+    stylistCount = 0;
+    for (let i = 0; i < num; i++) addStylist();
+    document.getElementById('addStylistBtn').style.display = num > 0 && num < 6 ? 'inline-flex' : 'none';
+  }
+
+  function addStylist() {
+    if (stylistCount >= 6) return;
+    stylistCount++;
+    const n = stylistCount;
+    const container = document.getElementById('stylistBlocks');
+    const block = document.createElement('div');
+    block.className = 'stylist-block';
+    block.id = `stylistBlock${n}`;
+
+    const specialtyChecks = SPECIALTY_OPTIONS.map(s =>
+      `<label class="choice-item"><input type="checkbox" name="stylist${n}_specialties" value="${s}"><span>${s}</span></label>`
+    ).join('');
+    const titleOpts = TITLE_OPTIONS.map(t => `<option>${t}</option>`).join('');
+    const expOpts = EXP_OPTIONS.map(e => `<option>${e}</option>`).join('');
+
+    block.innerHTML = `
+      <div class="stylist-block-title">Stylist ${n}</div>
+      ${n > 1 ? `<button type="button" class="stylist-remove" onclick="removeStylist(${n})" title="Remove">&times;</button>` : ''}
+      <div class="field-row">
+        <div class="field"><label>Name${n===1?' <span class="req">*</span>':''}</label>
+          <input type="text" name="stylist${n}_name" ${n===1?'required':''}></div>
+        <div class="field"><label>Title${n===1?' <span class="req">*</span>':''}</label>
+          <select name="stylist${n}_title" ${n===1?'required':''}><option value="">— Select —</option>${titleOpts}</select></div>
+      </div>
+      <div class="field"><label>Specialties${n===1?' <span class="req">*</span>':''}</label>
+        <div class="choice-group cols-2" style="margin-top:8px">${specialtyChecks}</div></div>
+      <div class="field-row">
+        <div class="field"><label>Years of experience${n===1?' <span class="req">*</span>':''}</label>
+          <select name="stylist${n}_exp" ${n===1?'required':''}><option value="">— Select —</option>${expOpts}</select></div>
+        <div class="field"><label>Headshot filename <span class="opt-tag">optional</span></label>
+          <input type="text" name="stylist${n}_photo" placeholder="jessica.jpg"></div>
+      </div>
+      <div class="field"><label>Bio (1–2 sentences)${n===1?' <span class="req">*</span>':''}</label>
+        <textarea name="stylist${n}_bio" ${n===1?'required':''} placeholder="Jessica founded the salon in 2018 and specializes in precision balayage..."></textarea></div>
+    `;
+    container.appendChild(block);
+  }
+
+  function removeStylist(n) {
+    const block = document.getElementById(`stylistBlock${n}`);
+    if (block) block.remove();
+  }
+
+  function collectFormData() {
+    const data = {};
+    const form = document.getElementById('intakeForm');
+    form.querySelectorAll('input[type="text"],input[type="email"],input[type="tel"],input[type="url"],textarea,select').forEach(el => {
+      if (el.name && el.name !== 'hp') data[el.name] = el.value;
+    });
+    form.querySelectorAll('input[type="radio"]:checked').forEach(el => {
+      data[el.name] = el.value;
+    });
+    const cbGroups = {};
+    form.querySelectorAll('input[type="checkbox"]').forEach(el => {
+      if (!el.name) return;
+      if (!cbGroups[el.name]) cbGroups[el.name] = [];
+      if (el.checked) cbGroups[el.name].push(el.value);
+    });
+    Object.assign(data, cbGroups);
+    data._hp = form.querySelector('input[name="hp"]')?.value || '';
+    return data;
+  }
+
+  async function submitForm() {
+    const submitBtn = document.getElementById('submitBtn');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending...';
+
+    const data = collectFormData();
+    // Inject tier from URL param so server can create correct Stripe session
+    const urlTier = new URLSearchParams(window.location.search).get('tier') || 'basic';
+    data.tier = ['basic','pro','premium'].includes(urlTier) ? urlTier : 'basic';
+    // Attach Turnstile token (empty string when Turnstile not configured — server allows it)
+    data._turnstile = _turnstileToken;
+
+    try {
+      const res = await fetch('/api/intake', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      if (res.ok) {
+        const body = await res.json().catch(() => ({}));
+        if (body.checkoutUrl) {
+          // Redirect to Stripe Checkout to collect setup token
+          submitBtn.textContent = 'Redirecting to payment…';
+          window.location.href = body.checkoutUrl;
+        } else {
+          // Stripe not configured — show success screen
+          document.getElementById('intakeForm').style.display = 'none';
+          document.querySelector('.progress-wrap').style.display = 'none';
+          document.getElementById('successScreen').classList.add('visible');
+        }
+      } else {
+        const body = await res.json().catch(() => ({}));
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit Intake';
+        const err = document.getElementById('err12');
+        err.textContent = body.error || 'Something went wrong. Please try again.';
+        err.classList.add('visible');
+      }
+    } catch {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Submit Intake';
+      const err = document.getElementById('err12');
+      err.textContent = 'Network error. Please check your connection and try again.';
+      err.classList.add('visible');
+    }
+  }
+</script>
+</body>
+</html>

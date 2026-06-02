@@ -1,0 +1,1683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" id="metaDesc" content="Salon & Spa - Book appointments for hair, nails, skin, and makeup services.">
+  <meta name="theme-color" content="#b76e79">
+  <title id="pageTitle">Salon & Spa</title>
+  <link rel="manifest" href="/manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/salonai/css/styles.css?v=11">
+  <!-- Hide demo/marketing nav by default; un-hide on landing path or Pro/Premium demo -->
+  <style id="demo-hide-css">
+    .nav-demo-item, .moonflower-cta-section, .moonflower-cta { display: none !important; }
+  </style>
+  <!-- Demo tier visibility rules (?demo=basic|pro|premium URL or /salonai/demo-* path) -->
+  <style>
+    .tier-pro-content, .tier-premium-content,
+    .tier-social-pro, .tier-social-premium { display: none; }
+    body.demo-mode .demo-hide { display: none !important; }
+    body.tier-pro .tier-pro-content, body.tier-premium .tier-pro-content,
+    body.tier-pro .tier-social-pro, body.tier-premium .tier-social-pro { display: block; }
+    body.tier-premium .tier-premium-content,
+    body.tier-premium .tier-social-premium { display: block; }
+    @media (max-width: 900px) {
+      .tier-pro-content [style*="grid-template-columns:repeat(3,1fr)"],
+      .tier-premium-content [style*="grid-template-columns:repeat(3,1fr)"] { grid-template-columns: 1fr !important; }
+      .tier-social-grid { grid-template-columns: repeat(2, 1fr) !important; }
+    }
+    @media (max-width: 560px) {
+      .tier-social-grid { grid-template-columns: 1fr !important; }
+    }
+    .kb-tile { position: relative; aspect-ratio: 4/5; overflow: hidden; background: #eee; }
+    .kb-img { position: absolute; inset: -4%; background-size: cover; background-position: center; will-change: transform; animation-duration: 18s; animation-timing-function: ease-in-out; animation-iteration-count: infinite; animation-direction: alternate; }
+    .kb-img.kb-a { animation-name: kb-zoom-center; }
+    .kb-img.kb-b { animation-name: kb-pan-right;  animation-delay: -4s; }
+    .kb-img.kb-c { animation-name: kb-pan-left;   animation-delay: -8s; }
+    .kb-img.kb-d { animation-name: kb-zoom-up;    animation-delay: -12s; }
+    @keyframes kb-zoom-center { from { transform: scale(1.00); } to { transform: scale(1.12); } }
+    @keyframes kb-pan-right   { from { transform: scale(1.10) translate(-2%,0); } to { transform: scale(1.14) translate(2%,0); } }
+    @keyframes kb-pan-left    { from { transform: scale(1.14) translate(2%,-1%); } to { transform: scale(1.10) translate(-2%,1%); } }
+    @keyframes kb-zoom-up     { from { transform: scale(1.00) translate(0,2%); } to { transform: scale(1.14) translate(0,-2%); } }
+    @media (prefers-reduced-motion: reduce) { .kb-img { animation: none !important; transform: scale(1.05); } }
+    .social-peek-card:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.10) !important; }
+  </style>
+  <script>
+    (function () {
+      var p = new URLSearchParams(window.location.search);
+      var tier = (p.get('demo') || '').toLowerCase();
+      var path = window.location.pathname;
+      // Detect tier from clean URL path (moonflowerai.com/salonai/demo-pro etc.)
+      if (!tier) {
+        if (path.indexOf('/demo-premium') !== -1) tier = 'premium';
+        else if (path.indexOf('/demo-pro') !== -1) tier = 'pro';
+        else if (path.indexOf('/demo-basic') !== -1) tier = 'basic';
+      }
+      // Apply demo-mode + tier body classes for tier-specific CSS
+      if (tier === 'basic' || tier === 'pro' || tier === 'premium') {
+        document.body.classList.add('demo-mode', 'tier-' + tier);
+      } else if (!path.startsWith('/salonai')) {
+        document.body.classList.add('demo-mode', 'tier-basic');
+      }
+      // Un-hide marketing nav on landing path or Pro/Premium
+      if (path.startsWith('/salonai') || tier === 'pro' || tier === 'premium') {
+        var s = document.getElementById('demo-hide-css');
+        if (s) s.disabled = true;
+      }
+    })();
+  </script>
+  <!-- Minimal Demo-menu styling (dropdown with Basic / Pro / Premium) -->
+  <style>
+    .nav-demo-item { position: relative; }
+    .nav-demo-toggle { cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+    .nav-demo-caret { font-size: 10px; transition: transform .18s ease; }
+    .nav-demo-item.open .nav-demo-caret { transform: rotate(180deg); }
+    .nav-demo-menu {
+      position: absolute;
+      top: calc(100% + 6px);
+      right: 0;
+      min-width: 160px;
+      background: #ffffff;
+      border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+      padding: 6px 0;
+      display: none;
+      z-index: 200;
+    }
+    .nav-demo-item.open .nav-demo-menu { display: block; }
+    .nav-demo-link {
+      display: block;
+      padding: 10px 18px;
+      color: #1a1a2e;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: background .12s ease;
+    }
+    .nav-demo-link:hover { background: #f5f0e6; color: #5B2C87; }
+
+    /* Pricing cards (replaces Featured Services + Reviews) */
+    .pricing-section { padding: 72px 20px; background: #f8f5ee; }
+    .pricing-section .section-title { color: #1a1a2e; }
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      max-width: 1100px;
+      margin: 40px auto 0;
+      align-items: stretch;
+    }
+    @media (max-width: 900px) { .pricing-grid { grid-template-columns: 1fr; max-width: 480px; } }
+    .pricing-card {
+      position: relative;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      padding: 30px 26px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    .pricing-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.12); }
+    .pricing-card-highlight {
+      border: 2px solid #D4A017;
+      box-shadow: 0 8px 28px rgba(212,160,23,0.2);
+      transform: translateY(-6px);
+      background: linear-gradient(180deg, #fff 0%, #fffbf0 100%);
+    }
+    .pricing-card-highlight:hover { transform: translateY(-10px); }
+    .pricing-badge {
+      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+      background: #D4A017; color: #1a1a2e;
+      font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700;
+      padding: 5px 14px; border-radius: 999px;
+    }
+    .pricing-name {
+      font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700;
+      color: #1a1a2e; margin-bottom: 4px;
+    }
+    .pricing-tag { color: #6b7280; font-size: 14px; margin-bottom: 18px; }
+    .pricing-amt { display: flex; align-items: baseline; gap: 6px; margin-bottom: 4px; }
+    .pricing-dollar { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 700; color: #1a1a2e; line-height: 1; }
+    .pricing-per { color: #6b7280; font-size: 14px; }
+    .pricing-setup { color: #4b5563; font-size: 13px; margin-bottom: 18px; padding-bottom: 18px; border-bottom: 1px solid #e5e7eb; }
+    .pricing-features { list-style: none; padding: 0; margin: 0 0 22px; flex: 1; }
+    .pricing-features li {
+      padding: 7px 0 7px 24px; position: relative; font-size: 14px; color: #4b5563; line-height: 1.5;
+    }
+    .pricing-features li::before { content: '✓'; position: absolute; left: 0; top: 7px; color: #5B2C87; font-weight: 700; }
+    .pricing-card-highlight .pricing-features li::before { color: #D4A017; }
+    .pricing-cta {
+      display: block; text-align: center;
+      padding: 13px 20px; border-radius: 999px;
+      background: #5B2C87; color: #fff;
+      font-weight: 700; font-size: 14px; text-decoration: none;
+      transition: background .18s ease, transform .18s ease;
+    }
+    .pricing-cta:hover { background: #3C1B6A; transform: translateY(-1px); }
+    .pricing-card-highlight .pricing-cta {
+      background: #D4A017; color: #1a1a2e;
+      box-shadow: 0 8px 20px rgba(212,160,23,0.3);
+    }
+    .pricing-card-highlight .pricing-cta:hover { background: #e9c05a; }
+    .pricing-fine {
+      max-width: 720px; margin: 36px auto 0; text-align: center;
+      font-size: 12px; color: #6b7280; line-height: 1.6;
+    }
+/* Strikethrough old setup price next to the new launch rate */
+    .pricing-setup-now { font-weight: 700; color: #1a1a2e; }
+    .pricing-setup-was {
+      margin-left: 8px; color: #9ca3af;
+      text-decoration: line-through;
+    }
+
+    /* Build-Only card */
+    .build-only-card {
+      margin-top: 28px;
+      border: 2px solid #e5e7eb;
+      border-radius: 16px;
+      background: #fff;
+      overflow: hidden;
+    }
+    .build-only-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+    @media (max-width: 760px) { .build-only-inner { grid-template-columns: 1fr; } }
+    .build-only-left {
+      padding: 32px 30px;
+      border-right: 1px solid #e5e7eb;
+    }
+    @media (max-width: 760px) { .build-only-left { border-right: none; border-bottom: 1px solid #e5e7eb; } }
+    .build-only-eyebrow {
+      font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+      color: #5B2C87; margin-bottom: 10px;
+    }
+    .build-only-title {
+      font-family: 'Playfair Display', serif; font-size: 1.7rem; font-weight: 700;
+      color: #1a1a2e; margin-bottom: 6px;
+    }
+    .build-only-tag { color: #6b7280; font-size: 14px; margin-bottom: 18px; }
+    .build-only-features {
+      list-style: none; padding: 0; margin: 0;
+    }
+    .build-only-features li {
+      padding: 6px 0 6px 22px; position: relative; font-size: 14px; color: #4b5563;
+    }
+    .build-only-features li::before {
+      content: '✓'; position: absolute; left: 0; top: 6px; color: #5B2C87; font-weight: 700;
+    }
+    .build-only-right {
+      padding: 32px 30px;
+      background: #fafaf9;
+      display: flex; flex-direction: column; justify-content: space-between; gap: 20px;
+    }
+    .build-only-price-row {
+      display: flex; flex-direction: column; gap: 14px;
+    }
+    .build-only-price-block {
+      display: flex; align-items: baseline; justify-content: space-between;
+      padding-bottom: 12px; border-bottom: 1px solid #e5e7eb;
+    }
+    .build-only-price-block:last-child { border-bottom: none; padding-bottom: 0; }
+    .build-only-label { font-size: 13px; color: #6b7280; }
+    .build-only-amount {
+      font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: #1a1a2e;
+    }
+    .build-only-per { font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 400; color: #6b7280; }
+    .build-only-cta { margin-top: 4px; }
+    .build-only-note {
+      font-size: 11px; color: #9ca3af; text-align: center; margin-top: 6px;
+    }
+    .build-only-upgrade {
+      margin-top: 14px; padding: 12px 16px;
+      background: #f5f0ff; border: 1px solid #d8b4fe;
+      border-radius: 10px; font-size: 13px; color: #5B2C87; line-height: 1.5;
+    }
+    .build-only-upgrade span { margin-right: 6px; }
+  </style>
+</head>
+<body>
+  <!-- MoonFlower AI demo: floating scroll-next pill, right edge of viewport -->
+  <style>
+    #scrollNextBtn {
+      position: fixed;
+      right: 24px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 1100;
+      padding: 12px 20px;
+      border: 0; border-radius: 999px;
+      background: linear-gradient(135deg,#5B2C87,#8b5cb8);
+      color: #fff; cursor: pointer;
+      box-shadow: 0 8px 24px rgba(91,44,135,.45);
+      font-family: 'Poppins', sans-serif;
+      font-size: 14px; font-weight: 600;
+      display: inline-flex; align-items: center; gap: 8px;
+      transition: transform .2s, box-shadow .2s, background .2s;
+      animation: pulseNext 2.5s ease-in-out infinite;
+    }
+    #scrollNextBtn:hover {
+      transform: translateY(-52%) scale(1.04);
+      box-shadow: 0 12px 32px rgba(91,44,135,.55);
+      animation-play-state: paused;
+    }
+    #scrollNextBtn svg { width: 18px; height: 18px; transition: transform .2s; }
+    #scrollNextBtn.near-bottom { background: linear-gradient(135deg,#D4A017,#e9c05a); box-shadow: 0 8px 24px rgba(212,160,23,.45); }
+    #scrollNextBtn.near-bottom svg { transform: rotate(180deg); }
+    @keyframes pulseNext {
+      0%, 100% { box-shadow: 0 8px 24px rgba(91,44,135,.45); }
+      50%      { box-shadow: 0 8px 24px rgba(91,44,135,.45), 0 0 0 10px rgba(139,92,184,0); }
+      25%      { box-shadow: 0 8px 24px rgba(91,44,135,.55), 0 0 0 6px rgba(139,92,184,.3); }
+    }
+    @media (max-width: 640px) {
+      #scrollNextBtn { right: 12px; padding: 10px 16px; font-size: 12px; top: auto; bottom: 120px; transform: none; }
+      #scrollNextBtn:hover { transform: scale(1.04); }
+    }
+  </style>
+  <button id="scrollNextBtn" aria-label="Next section">
+    <span class="scroll-next-label">Next</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6 9l6 6 6-6"/>
+    </svg>
+  </button>
+  <script>
+    (function () {
+      const btn = document.getElementById('scrollNextBtn');
+      if (!btn) return;
+      function getTargets() {
+        // All content "cards" the button should cycle through, in document order.
+        // Includes the hero itself so the user can return to the top.
+        return Array.from(document.querySelectorAll('.hero, #page-home .section'))
+          .filter(el => el.offsetParent !== null);
+      }
+      function nextTarget() {
+        const targets = getTargets();
+        if (targets.length === 0) return null;
+        const scrollY = window.scrollY + 80; // account for navbar height
+        const next = targets.find(el => el.getBoundingClientRect().top + window.scrollY > scrollY + 10);
+        return next || targets[0]; // wrap to top if at bottom
+      }
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = nextTarget();
+        if (!target) return;
+        const topY = target.getBoundingClientRect().top + window.scrollY - 70;
+        window.scrollTo({ top: topY, behavior: 'smooth' });
+      });
+      // Update button label and style based on scroll position
+      function updateBtn() {
+        const targets = getTargets();
+        const scrollY = window.scrollY + 80;
+        const idx = targets.findIndex(el => el.getBoundingClientRect().top + window.scrollY > scrollY + 10);
+        const isAtBottom = idx === -1;
+        const label = btn.querySelector('.scroll-next-label');
+        if (isAtBottom) {
+          btn.classList.add('near-bottom');
+          btn.setAttribute('aria-label', 'Back to top');
+          if (label) label.textContent = 'Top';
+        } else {
+          btn.classList.remove('near-bottom');
+          btn.setAttribute('aria-label', 'Next section');
+          if (label) label.textContent = 'Next';
+        }
+      }
+      window.addEventListener('scroll', updateBtn, { passive: true });
+      updateBtn();
+    })();
+  </script>
+
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#home" class="nav-logo">
+        <span class="logo-icon" id="logoIcon">L</span>
+        <span class="logo-text" id="logoText">Salon & Spa</span>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <!-- Demo menu with 3 tier options -->
+        <li class="nav-demo-item">
+          <a href="#" class="nav-link nav-demo-toggle" id="navDemoToggle" aria-haspopup="true" aria-expanded="false">
+            Demo <span class="nav-demo-caret">&#9662;</span>
+          </a>
+          <div class="nav-demo-menu" id="navDemoMenu">
+            <a href="https://moonflowerai.com/salonai/demo-basic"   target="_blank" rel="noopener" class="nav-demo-link">Basic</a>
+            <a href="https://moonflowerai.com/salonai/demo-pro"     target="_blank" rel="noopener" class="nav-demo-link">Pro</a>
+            <a href="https://moonflowerai.com/salonai/demo-premium" target="_blank" rel="noopener" class="nav-demo-link">Premium</a>
+          </div>
+        </li>
+        <!-- Social Media Promos: each option opens the seasonal promo
+             video in a new tab. Same dropdown component as the Demo menu. -->
+        <li class="nav-demo-item">
+          <a href="#" class="nav-link nav-demo-toggle" id="navPromoToggle" aria-haspopup="true" aria-expanded="false">
+            Social Media Promos <span class="nav-demo-caret">&#9662;</span>
+          </a>
+          <div class="nav-demo-menu" id="navPromoMenu">
+            <a href="/salonai/promo-player.html?video=/salonai/videos/promo/reset-week-promo-final.mp4&label=Spring" target="_blank" rel="noopener" class="nav-demo-link">Spring</a>
+            <a href="/salonai/promo-player.html?video=/salonai/videos/promo/summer-glow/final.mp4&label=Summer" target="_blank" rel="noopener" class="nav-demo-link">Summer</a>
+            <a href="/salonai/promo-player.html?video=/salonai/videos/promo/fall-refresh/final.mp4&label=Fall" target="_blank" rel="noopener" class="nav-demo-link">Fall</a>
+            <a href="/salonai/promo-player.html?video=/salonai/videos/promo/holiday-glam/final.mp4&label=Winter" target="_blank" rel="noopener" class="nav-demo-link">Winter</a>
+            <a href="/salonai/promo-player.html?video=/salonai/videos/promo/spa/final.mp4&label=Spa" target="_blank" rel="noopener" class="nav-demo-link">Spa</a>
+          </div>
+        </li>
+        <li id="navLoginItem"><a href="#" class="nav-link nav-login-btn" id="navLoginBtn">Login</a></li>
+        <li id="navUserItem" style="display:none">
+          <div class="nav-user-menu">
+            <button class="nav-user-btn" id="navUserBtn">
+              <span class="nav-user-avatar" id="navUserAvatar">U</span>
+              <span class="nav-user-name" id="navUserName">User</span>
+            </button>
+            <div class="nav-user-dropdown" id="navUserDropdown">
+              <a href="#appointments">My Bookings</a>
+              <button id="logoutBtn">Logout</button>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main id="mainContent">
+
+    <!-- HOME PAGE -->
+    <section class="page active" id="page-home">
+      <div class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-grid">
+          <div class="hero-content">
+            <p class="hero-tagline" id="heroTagline"></p>
+            <p class="hero-subtitle" id="heroSubtitle"></p>
+            <!-- Book Now / Chat With Us buttons removed — this is the
+                 SalonAI landing page, not a salon's own site. Pricing
+                 cards below are the real CTAs for prospects. -->
+          </div>
+          <!-- Hero promo video previously lived here. Removed because the
+               full 4-up Promo Gallery section below already showcases every
+               seasonal promo, making this single hero spot redundant. -->
+
+        </div>
+      </div>
+
+      <!-- Promo gallery removed from landing page. The four seasonal promos
+           are now reachable from the "Social Media Promos" dropdown in the
+           top nav (each option opens its MP4 in a new tab). -->
+
+
+      <!-- DEMO_ONLY:START -->
+      <!-- Marketing CTA card (was previously docked in the hero on the right;
+           moved here below the hero so the video can take that hero space). -->
+      <div class="section moonflower-cta-section">
+        <div class="container">
+          <aside class="moonflower-cta-card" aria-label="MoonFlower AI intake call-to-action">
+            <div class="moonflower-cta-eyebrow">MoonFlower AI</div>
+            <h2 class="moonflower-cta-title">Add a professional look to your business?</h2>
+            <p class="moonflower-cta-sub">We'll build it in days, not months.</p>
+            <p class="moonflower-cta-intro">We'll present your business and make it user-friendly with add-ons like:</p>
+            <ul class="moonflower-cta-bullets">
+              <li>🎨 Custom design around your brand</li>
+              <li>🤖 24/7 human-like chat assistant</li>
+              <li>☎️ Voice bot answers your phone</li>
+              <li>📅 Online appointment booking</li>
+              <li>💬 SMS reminders and confirmations</li>
+            </ul>
+            <a href="/salonai/intake" class="moonflower-cta-btn">Tell us about your salon &rarr;</a>
+            <span class="moonflower-cta-note">Takes about 15 minutes.</span>
+          </aside>
+        </div>
+      </div>
+      <!-- DEMO_ONLY:END -->
+
+      <!-- Pricing card: 3 tiers (Basic / Pro / Premium).
+           Anchors #basic, #pro, #premium match the Demo dropdown in the nav. -->
+      <div class="section pricing-section">
+        <div class="container">
+          <h2 class="section-title">Pick a plan</h2>
+          <p class="section-subtitle">Fill the intake form — we build your site first, you pay only after launch.</p>
+
+          <div class="pricing-grid" id="pricingGrid"></div>
+
+          <p class="pricing-fine">
+            No payment up front. The 20% token is collected at intake; the balance is invoiced
+            after your site is live and you approve it. Monthly subscription starts on launch day.
+          </p>
+
+          <div class="build-only-card" id="buildOnlyCard"></div>
+
+          <script>
+          (function() {
+            var INTAKE = '/salonai/intake';
+            var plans = [
+              { id:'basic', name:'Basic', tag:'Launch your salon online.', monthly:79, setup:899, setupWas:1500, token:180, highlight:false, badge:null,
+                features:['Custom salon website','24/7 AI chat assistant','Online booking + calendar','Admin dashboard'] },
+              { id:'pro', name:'Pro', tag:'For salons with an audience.', monthly:129, setup:1499, setupWas:2500, token:300, highlight:true, badge:'Most popular',
+                features:['Everything in Basic','Email + SMS reminders','Installable mobile app','Social promotion (FB or IG)','<strong>1 AI post per month</strong>','Priority email support'] },
+              { id:'premium', name:'Premium', tag:'The full concierge experience.', monthly:229, setup:1999, setupWas:3500, token:400, highlight:false, badge:null,
+                features:['Everything in Pro','<strong>Voice AI phone assistant</strong> <small>(300 min/mo, $0.50/min after)</small>','4-platform social (TikTok/YT/IG/FB)','<strong>4 AI posts per month</strong>','Same-day priority support'] }
+            ];
+            var grid = document.getElementById('pricingGrid');
+            if (grid) {
+              grid.innerHTML = plans.map(function(p) {
+                return '<article class="pricing-card' + (p.highlight ? ' pricing-card-highlight' : '') + '" id="' + p.id + '">'
+                  + (p.badge ? '<div class="pricing-badge">' + p.badge + '</div>' : '')
+                  + '<h3 class="pricing-name">' + p.name + '</h3>'
+                  + '<p class="pricing-tag">' + p.tag + '</p>'
+                  + '<div class="pricing-amt"><span class="pricing-dollar">$' + p.monthly + '</span><span class="pricing-per">/month</span></div>'
+                  + '<div class="pricing-setup"><span class="pricing-setup-now">$' + p.setup.toLocaleString() + ' setup</span>'
+                  + '<span class="pricing-setup-was">$' + p.setupWas.toLocaleString() + '</span>'
+                  + '<br>$' + p.token + ' nonrefundable token at intake</div>'
+                  + '<ul class="pricing-features">' + p.features.map(function(f){ return '<li>' + f + '</li>'; }).join('') + '</ul>'
+                  + '<a class="pricing-cta" href="' + INTAKE + '?tier=' + p.id + '">Sign up for ' + p.name + ' &rarr;</a>'
+                  + '</article>';
+              }).join('');
+            }
+            var bo = document.getElementById('buildOnlyCard');
+            if (bo) {
+              bo.innerHTML = '<div class="build-only-inner">'
+                + '<div class="build-only-left">'
+                + '<div class="build-only-eyebrow">No subscription</div>'
+                + '<h3 class="build-only-title">Website Build Only</h3>'
+                + '<p class="build-only-tag">Own your site outright. No monthly fees.</p>'
+                + '<ul class="build-only-features">'
+                + '<li>Custom web portal (mobile-ready)</li>'
+                + '<li>Home, services, gallery, and contact pages</li>'
+                + '<li>Your branding, colors, and photos</li>'
+                + '<li>Contact form so clients can reach you</li>'
+                + '<li>30-day bug-fix warranty included</li>'
+                + '<li><small style="color:#9ca3af">Static pages only. No AI, booking, or dashboard.</small></li>'
+                + '</ul></div>'
+                + '<div class="build-only-right">'
+                + '<div class="build-only-price-row">'
+                + '<div class="build-only-price-block"><span class="build-only-label">One-time build</span><span class="build-only-amount">$499</span></div>'
+                + '<div class="build-only-price-block"><span class="build-only-label">Annual maintenance</span><span class="build-only-amount">$199<span class="build-only-per">/yr</span></span></div>'
+                + '<div class="build-only-price-block"><span class="build-only-label">Per fix after 30 days</span><span class="build-only-amount">$89<span class="build-only-per">/issue</span></span></div>'
+                + '</div>'
+                + '<a class="pricing-cta build-only-cta" href="' + INTAKE + '?tier=build-only">Get a quote &rarr;</a>'
+                + '<p class="build-only-note">$240 nonrefundable token at intake. Balance due on launch day.</p>'
+                + '<div class="build-only-upgrade"><span>&#9650;</span> Want AI chat, online booking, calendar, or an admin dashboard? Those are included in the <strong>Basic plan</strong> at $79/month.</div>'
+                + '</div></div>';
+            }
+          })();
+          </script>
+        </div>
+      </div>
+
+      <div class="section about-section">
+        <div class="container about-grid">
+          <div class="about-content">
+            <h2 class="section-title text-left" id="aboutTitle">About</h2>
+            <p id="aboutText1"></p>
+            <p id="aboutText2"></p>
+            <div class="about-stats">
+              <div class="stat-item"><span class="stat-number">4</span><span class="stat-label">Expert Stylists</span></div>
+              <div class="stat-item"><span class="stat-number">20+</span><span class="stat-label">Services</span></div>
+              <div class="stat-item"><span class="stat-number">4.8</span><span class="stat-label">Avg Rating</span></div>
+            </div>
+          </div>
+          <div class="about-image">
+            <img src="images/amrita-art-ai-generated-8441554.jpg" alt="Salon interior" style="width:100%;height:100%;object-fit:cover;border-radius:16px;" />
+          </div>
+        </div>
+      </div>
+
+      <!-- DEMO_ONLY:START -->
+      <!-- MoonFlower AI promo: direct link to the intake Google Form -->
+      <div class="section moonflower-cta" style="background:linear-gradient(135deg,#5B2C87,#1A1A2E);color:#fff;padding:64px 20px;text-align:center;">
+        <div class="container" style="max-width:720px;margin:0 auto;">
+          <div style="font-family:'Poppins',sans-serif;font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#D4A017;margin-bottom:12px;">MoonFlower AI</div>
+          <h2 style="font-family:'Playfair Display',serif;font-size:clamp(28px,4vw,40px);font-weight:700;margin-bottom:14px;line-height:1.2;">Ready to build yours?</h2>
+          <p style="font-size:16px;color:rgba(255,255,255,.85);max-width:540px;margin:0 auto 28px;">Tell us about your salon and we'll launch your site in days, not months. With a smart chat assistant, voice bot, and online booking built in.</p>
+          <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+            <a href="/salonai/intake"
+               style="background:#D4A017;color:#1A1A2E;padding:14px 32px;border-radius:999px;font-family:'Poppins',sans-serif;font-weight:700;font-size:15px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;">
+              Tell us about your salon
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      <!-- DEMO_ONLY:END -->
+    </section>
+
+    <!-- SERVICES PAGE -->
+    <section class="page" id="page-services">
+      <div class="page-header">
+        <h1 class="page-title">Our Services</h1>
+        <p class="page-subtitle">Explore our full menu of beauty treatments</p>
+      </div>
+      <div class="container">
+        <div class="category-tabs" id="categoryTabs">
+          <button class="tab-btn active" data-category="all">All</button>
+          <button class="tab-btn" data-category="Hair">Hair</button>
+          <button class="tab-btn" data-category="Nails">Nails</button>
+          <button class="tab-btn" data-category="Skin">Skin</button>
+          <button class="tab-btn" data-category="Makeup">Makeup</button>
+        </div>
+        <div class="services-grid" id="servicesGrid">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- BOOK PAGE -->
+    <section class="page" id="page-book">
+      <div class="page-header">
+        <h1 class="page-title">Book an Appointment</h1>
+        <p class="page-subtitle">Schedule your next visit in just a few steps</p>
+      </div>
+      <div class="container">
+        <div class="booking-progress">
+          <div class="progress-step active" data-step="1"><span class="step-num">1</span><span class="step-label" data-term="service">Service</span></div>
+          <div class="progress-line"></div>
+          <div class="progress-step" data-step="2"><span class="step-num">2</span><span class="step-label" data-term="provider">Stylist</span></div>
+          <div class="progress-line"></div>
+          <div class="progress-step" data-step="3"><span class="step-num">3</span><span class="step-label">Date & Time</span></div>
+          <div class="progress-line"></div>
+          <div class="progress-step" data-step="4"><span class="step-num">4</span><span class="step-label">Details</span></div>
+          <div class="progress-line"></div>
+          <div class="progress-step" data-step="5"><span class="step-num">5</span><span class="step-label">Confirm</span></div>
+        </div>
+
+        <!-- Step 1: Select Service -->
+        <div class="booking-step active" id="bookStep1">
+          <h2 class="step-title">Choose a Service</h2>
+          <div class="book-category-tabs" id="bookCategoryTabs">
+            <button class="tab-btn active" data-category="all">All</button>
+            <button class="tab-btn" data-category="Hair">Hair</button>
+            <button class="tab-btn" data-category="Nails">Nails</button>
+            <button class="tab-btn" data-category="Skin">Skin</button>
+            <button class="tab-btn" data-category="Makeup">Makeup</button>
+          </div>
+          <div class="book-services-grid" id="bookServicesGrid">
+            <!-- Populated by JS -->
+          </div>
+          <div class="step-actions">
+            <button class="btn btn-primary" id="bookStep1Next" disabled>Next: Choose Stylist</button>
+          </div>
+        </div>
+
+        <!-- Step 2: Select Provider -->
+        <div class="booking-step" id="bookStep2">
+          <h2 class="step-title">Choose Your <span data-term="provider">Stylist</span></h2>
+          <div class="staff-grid" id="bookStaffGrid">
+            <!-- Populated by JS -->
+          </div>
+          <div class="step-actions">
+            <button class="btn btn-outline" id="bookStep2Back">Back</button>
+            <button class="btn btn-primary" id="bookStep2Next" disabled>Next: Pick Date & Time</button>
+          </div>
+        </div>
+
+        <!-- Step 3: Pick Date & Time -->
+        <div class="booking-step" id="bookStep3">
+          <h2 class="step-title">Pick Date & Time</h2>
+          <div class="datetime-picker">
+            <div class="date-picker-section">
+              <label class="form-label">Select Date</label>
+              <input type="date" class="form-input" id="bookDate">
+            </div>
+            <div class="time-picker-section">
+              <label class="form-label">Available Time Slots</label>
+              <div class="time-slots" id="timeSlots">
+                <p class="slots-placeholder">Please select a date to see available times.</p>
+              </div>
+            </div>
+          </div>
+          <div class="step-actions">
+            <button class="btn btn-outline" id="bookStep3Back">Back</button>
+            <button class="btn btn-primary" id="bookStep3Next" disabled>Next: Your Details</button>
+          </div>
+        </div>
+
+        <!-- Step 4: Customer Details -->
+        <div class="booking-step" id="bookStep4">
+          <h2 class="step-title">Your Details</h2>
+          <form class="booking-form" id="bookingForm">
+            <div class="form-group">
+              <label class="form-label" for="bookName">Full Name *</label>
+              <input type="text" class="form-input" id="bookName" required placeholder="Your full name">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="bookEmail">Email *</label>
+              <input type="email" class="form-input" id="bookEmail" required placeholder="your@email.com">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="bookPhone">Phone</label>
+              <input type="tel" class="form-input" id="bookPhone" placeholder="(555) 123-4567">
+            </div>
+            <div class="form-group" id="bookServiceAddressGroup" style="display:none;">
+              <label class="form-label" for="bookServiceAddress">Service Address *</label>
+              <input type="text" class="form-input" id="bookServiceAddress" placeholder="Street address where service is needed">
+              <small style="color:var(--gray-500);font-size:0.82rem;display:block;margin-top:4px;">We'll dispatch to this address at the scheduled time.</small>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="bookNotes">Special Requests</label>
+              <textarea class="form-input form-textarea" id="bookNotes" rows="3" placeholder="Any special requests or notes..."></textarea>
+            </div>
+          </form>
+          <div class="booking-summary" id="bookingSummary">
+            <!-- Populated by JS -->
+          </div>
+          <div class="step-actions">
+            <button class="btn btn-outline" id="bookStep4Back">Back</button>
+            <button class="btn btn-primary" id="bookStep4Next">Confirm Booking</button>
+          </div>
+        </div>
+
+        <!-- Step 5: Confirmation -->
+        <div class="booking-step" id="bookStep5">
+          <div class="confirmation-content" id="confirmationContent">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GALLERY PAGE -->
+    <section class="page" id="page-gallery">
+      <div class="page-header">
+        <h1 class="page-title">Our Gallery</h1>
+        <p class="page-subtitle">A glimpse into our work and atmosphere</p>
+      </div>
+      <div class="container">
+        <div class="gallery-grid" id="galleryGrid">
+          <div class="gallery-empty">Loading gallery...</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT PAGE -->
+    <section class="page" id="page-contact">
+      <div class="page-header">
+        <h1 class="page-title">Contact Us</h1>
+        <p class="page-subtitle">We would love to hear from you</p>
+      </div>
+      <div class="container">
+        <div class="contact-grid">
+          <div class="contact-info">
+            <div class="contact-card">
+              <div class="contact-icon">&#128205;</div>
+              <h3>Visit Us</h3>
+              <p id="contactAddress">123 Main Street, Louisville, KY 40202</p>
+            </div>
+            <div class="contact-card">
+              <div class="contact-icon">&#128222;</div>
+              <h3>Call Us</h3>
+              <p id="contactPhone">(502) 555-0123</p>
+            </div>
+            <div class="contact-card">
+              <div class="contact-icon">&#9993;</div>
+              <h3>Email Us</h3>
+              <p id="contactEmail">hello@luxesalon.com</p>
+            </div>
+            <div class="contact-card">
+              <div class="contact-icon">&#128336;</div>
+              <h3>Hours</h3>
+              <div id="contactHours">
+                <p>Mon - Fri: 9:00 AM - 7:00 PM</p>
+                <p>Saturday: 9:00 AM - 5:00 PM</p>
+                <p>Sunday: Closed</p>
+              </div>
+            </div>
+          </div>
+          <div class="contact-form-wrapper">
+            <h2>Send Us a Message</h2>
+            <form class="contact-form" id="contactForm">
+              <div class="form-group">
+                <label class="form-label" for="contactFormName">Name</label>
+                <input type="text" class="form-input" id="contactFormName" required placeholder="Your name">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="contactFormEmail">Email</label>
+                <input type="email" class="form-input" id="contactFormEmail" required placeholder="your@email.com">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="contactFormSubject">Subject</label>
+                <input type="text" class="form-input" id="contactFormSubject" required placeholder="How can we help?">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="contactFormMessage">Message</label>
+                <textarea class="form-input form-textarea" id="contactFormMessage" rows="5" required placeholder="Your message..."></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary btn-block">Send Message</button>
+            </form>
+            <div class="map-placeholder">
+              <div class="map-inner">
+                <span class="map-pin">&#128205;</span>
+                <p>123 Main Street, Louisville, KY 40202</p>
+                <a href="https://maps.google.com/?q=123+Main+Street+Louisville+KY+40202" target="_blank" rel="noopener" class="btn btn-outline btn-sm">Open in Google Maps</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- APPOINTMENTS PAGE -->
+    <section class="page" id="page-appointments">
+      <div class="page-header">
+        <h1 class="page-title">My Appointments</h1>
+        <p class="page-subtitle">View and manage your bookings</p>
+      </div>
+      <div class="container">
+        <div class="appointments-list" id="appointmentsList">
+          <div class="loading-spinner">Loading your appointments...</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ADMIN PAGE -->
+    <section class="page" id="page-admin">
+      <div class="page-header">
+        <h1 class="page-title">Admin Dashboard</h1>
+        <p class="page-subtitle">Business overview and management</p>
+      </div>
+      <div class="container">
+        <div class="admin-stats" id="adminStats">
+          <!-- Populated by JS -->
+        </div>
+        <div class="admin-section">
+          <div class="admin-header">
+            <h2>Appointments</h2>
+            <div class="admin-filters">
+              <input type="date" class="form-input" id="adminDateFilter">
+              <select class="form-input" id="adminStatusFilter">
+                <option value="">All Statuses</option>
+                <option value="confirmed">Confirmed</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+              <button class="btn btn-primary btn-sm" id="adminFilterBtn">Filter</button>
+            </div>
+          </div>
+          <div class="admin-table-wrapper">
+            <table class="admin-table" id="adminTable">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Time</th>
+                  <th>Customer</th>
+                  <th>Service</th>
+                  <th>Stylist</th>
+                  <th>Price</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="adminTableBody">
+                <!-- Populated by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="admin-section">
+          <div class="admin-header">
+            <h2>Services</h2>
+            <button class="btn btn-primary btn-sm" id="adminAddServiceBtn">+ Add Service</button>
+          </div>
+          <div id="adminServicesList" class="admin-crud-list">
+            <div class="loading-spinner">Loading services...</div>
+          </div>
+        </div>
+
+        <div class="admin-section">
+          <div class="admin-header">
+            <h2>Staff</h2>
+            <button class="btn btn-primary btn-sm" id="adminAddStaffBtn">+ Add Staff</button>
+          </div>
+          <div id="adminStaffList" class="admin-crud-list">
+            <div class="loading-spinner">Loading staff...</div>
+          </div>
+        </div>
+
+        <div class="admin-section">
+          <div class="admin-header">
+            <h2>Gallery</h2>
+            <button class="btn btn-primary btn-sm" id="adminAddGalleryBtn">+ Add Image</button>
+          </div>
+          <div id="adminGalleryList" class="admin-crud-list">
+            <div class="loading-spinner">Loading gallery...</div>
+          </div>
+        </div>
+
+        <div class="admin-section">
+          <div class="admin-header">
+            <h2>Customers</h2>
+          </div>
+          <div id="adminCustomersList" class="admin-crud-list">
+            <div class="loading-spinner">Loading customers...</div>
+          </div>
+        </div>
+
+        <div class="admin-section">
+          <div class="admin-header">
+            <h2>Feedback</h2>
+          </div>
+          <div id="adminFeedbackList" class="admin-crud-list">
+            <div class="loading-spinner">Loading feedback...</div>
+          </div>
+        </div>
+
+        <div class="admin-section">
+          <div class="admin-header">
+            <h2>Export</h2>
+          </div>
+          <div class="admin-export-row">
+            <a class="btn btn-outline btn-sm" id="adminExportBtn" href="#">Download appointments as CSV</a>
+            <span class="admin-export-note">Includes all appointments with customer, service, staff, and revenue data.</span>
+          </div>
+        </div>
+
+        <!-- Customer profile modal -->
+        <div class="modal-overlay" id="customerProfileModal">
+          <div class="modal">
+            <button class="modal-close" id="customerProfileClose">&times;</button>
+            <div id="customerProfileBody"></div>
+          </div>
+        </div>
+
+        <!-- Simple form modal for admin CRUD -->
+        <div class="modal-overlay" id="adminFormModal">
+          <div class="modal">
+            <button class="modal-close" id="adminFormModalClose">&times;</button>
+            <h2 class="modal-title" id="adminFormTitle">Add</h2>
+            <div id="adminFormBody"></div>
+            <div class="form-error" id="adminFormError"></div>
+            <div class="step-actions">
+              <button class="btn btn-outline" id="adminFormCancel">Cancel</button>
+              <button class="btn btn-primary" id="adminFormSave">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+      <div class="section tier-pro-content" style="background:#f0fdfa;padding:56px 20px;">
+        <div class="container" style="max-width:1100px;margin:0 auto;">
+          <h2 style="text-align:center;font-family:'Playfair Display',serif;font-size:2rem;color:#134e4a;margin-bottom:8px;">Stay connected on social</h2>
+          <p style="text-align:center;color:#4b5563;margin-bottom:36px;">Everything in Basic, plus active presence online.</p>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:22px;">
+            <div style="background:#fff;padding:22px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+              <div style="font-size:28px;margin-bottom:10px;">📱</div>
+              <h4 style="font-weight:600;margin-bottom:6px;color:#1a1a2e;">Mobile app</h4>
+              <p style="font-size:14px;color:#4b5563;">Tap to install on your phone — book from the home screen.</p>
+            </div>
+            <a href="#" onclick="event.preventDefault(); event.stopPropagation(); var el=document.getElementById('socialFeedPro'); if(el) el.scrollIntoView({behavior:'smooth', block:'start'}); return false;" class="social-peek-card" style="background:#fff;padding:22px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06);text-decoration:none;color:inherit;display:block;transition:transform .2s, box-shadow .2s;cursor:pointer;">
+              <div style="font-size:28px;margin-bottom:10px;">📣</div>
+              <h4 style="font-weight:600;margin-bottom:6px;color:#1a1a2e;">See our latest posts</h4>
+              <p style="font-size:14px;color:#4b5563;margin-bottom:12px;">Fresh posts every week — tips, transformations, and openings.</p>
+              <span style="display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:#0d9488;">View the feed <span aria-hidden="true">→</span></span>
+            </a>
+            <div style="background:#fff;padding:22px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+              <div style="font-size:28px;margin-bottom:10px;">✉️</div>
+              <h4 style="font-weight:600;margin-bottom:6px;color:#1a1a2e;">Priority support</h4>
+              <p style="font-size:14px;color:#4b5563;">Next-business-day answers for repeat clients.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pro tier social feed — 4 AI-generated Instagram-style post cards.
+           Same visibility as tier-pro-content (Pro + Premium demos). -->
+      <div id="socialFeedPro" class="section tier-social-feed tier-social-pro" style="background:#fff;padding:56px 20px;scroll-margin-top:80px;">
+        <div class="container" style="max-width:1100px;margin:0 auto;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px;margin-bottom:28px;">
+            <div>
+              <h2 style="font-family:'Playfair Display',serif;font-size:1.8rem;color:#1a1a2e;margin-bottom:4px;">Follow @clairessalonspa</h2>
+              <p style="color:#6b7280;font-size:14px;">Fresh posts every week from your AI content pipeline.</p>
+            </div>
+          </div>
+          <div class="tier-social-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;">
+            <article style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+              <div class="kb-tile"><div class="kb-img kb-a" style="background-image:url('/images/social/pro/post-1.webp');"></div></div>
+              <div style="padding:12px 14px;">
+                <div style="font-size:11px;font-weight:600;color:#5B2C87;margin-bottom:4px;">Claire's Salon &amp; Spa</div>
+                <p style="font-size:12px;color:#4b5563;line-height:1.45;margin:0;">Your chair. Your color. Your moment.</p>
+              </div>
+            </article>
+            <article style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+              <div class="kb-tile"><div class="kb-img kb-b" style="background-image:url('/images/social/pro/post-2.webp');"></div></div>
+              <div style="padding:12px 14px;">
+                <div style="font-size:11px;font-weight:600;color:#5B2C87;margin-bottom:4px;">Claire's Salon &amp; Spa</div>
+                <p style="font-size:12px;color:#4b5563;line-height:1.45;margin:0;">The secret to color that lasts.</p>
+              </div>
+            </article>
+            <article style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+              <div class="kb-tile"><div class="kb-img kb-c" style="background-image:url('/images/social/pro/post-3.webp');"></div></div>
+              <div style="padding:12px 14px;">
+                <div style="font-size:11px;font-weight:600;color:#5B2C87;margin-bottom:4px;">Claire's Salon &amp; Spa</div>
+                <p style="font-size:12px;color:#4b5563;line-height:1.45;margin:0;">The tools we trust.</p>
+              </div>
+            </article>
+            <article style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+              <div class="kb-tile"><div class="kb-img kb-d" style="background-image:url('/images/social/pro/post-4.webp');"></div></div>
+              <div style="padding:12px 14px;">
+                <div style="font-size:11px;font-weight:600;color:#5B2C87;margin-bottom:4px;">Claire's Salon &amp; Spa</div>
+                <p style="font-size:12px;color:#4b5563;line-height:1.45;margin:0;">The perfect blowout — every detail.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+
+      <!-- Premium tier showcase — shown on ?demo=premium only -->
+      <div class="section tier-premium-content" style="background:linear-gradient(135deg,#1a1a2e,#134e4a);color:#fff;padding:56px 20px;">
+        <div class="container" style="max-width:1100px;margin:0 auto;">
+          <h2 style="text-align:center;font-family:'Playfair Display',serif;font-size:2rem;color:#fff;margin-bottom:8px;">Call or chat anytime</h2>
+          <p style="text-align:center;color:rgba(255,255,255,0.75);margin-bottom:36px;">Everything in Pro, plus the full concierge experience.</p>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:22px;">
+            <div style="background:rgba(255,255,255,0.05);padding:22px;border-radius:12px;border:2px solid #D4A017;">
+              <div style="font-size:28px;margin-bottom:10px;">☎️</div>
+              <h4 style="font-weight:600;margin-bottom:6px;color:#fff;">Virtual receptionist</h4>
+              <p style="font-size:14px;color:rgba(255,255,255,0.85);">Books appointments 24/7 — transfers to us when needed.</p>
+              <a href="tel:+15025550147" style="display:inline-block;margin-top:12px;background:#D4A017;color:#1a1a2e;padding:10px 18px;border-radius:999px;font-weight:700;text-decoration:none;font-size:14px;">📞 (502) 555-0147</a>
+            </div>
+            <div style="background:rgba(255,255,255,0.05);padding:22px;border-radius:12px;">
+              <div style="font-size:28px;margin-bottom:10px;">📺</div>
+              <h4 style="font-weight:600;margin-bottom:6px;color:#fff;">Find us everywhere</h4>
+              <p style="font-size:14px;color:rgba(255,255,255,0.8);">TikTok, YouTube, Instagram, Facebook — one brand, every feed.</p>
+            </div>
+            <div style="background:rgba(255,255,255,0.05);padding:22px;border-radius:12px;">
+              <div style="font-size:28px;margin-bottom:10px;">⚡</div>
+              <h4 style="font-weight:600;margin-bottom:6px;color:#fff;">Same-day support</h4>
+              <p style="font-size:14px;color:rgba(255,255,255,0.8);">Phone and email — a human answers within business hours.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Premium tier social feed — 4 spa-themed AI-generated posts.
+           Visible only on ?demo=premium. -->
+      <div class="section tier-social-feed tier-social-premium" style="background:#f5f0e6;padding:56px 20px;">
+        <div class="container" style="max-width:1100px;margin:0 auto;">
+          <div style="margin-bottom:28px;">
+            <h2 style="font-family:'Playfair Display',serif;font-size:1.8rem;color:#1a1a2e;margin-bottom:4px;">Premium content on 4 platforms</h2>
+            <p style="color:#6b7280;font-size:14px;">12 AI-crafted posts per month across Instagram, Facebook, TikTok, and YouTube.</p>
+          </div>
+          <div class="tier-social-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;">
+            <article style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+              <div class="kb-tile"><div class="kb-img kb-b" style="background-image:url('/images/social/premium/post-1.webp');"></div></div>
+              <div style="padding:12px 14px;">
+                <div style="font-size:11px;font-weight:600;color:#D4A017;margin-bottom:4px;">Claire's Salon &amp; Spa</div>
+                <p style="font-size:12px;color:#4b5563;line-height:1.45;margin:0;">Stress and tension melt away in 60 minutes.</p>
+              </div>
+            </article>
+            <article style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+              <div class="kb-tile"><div class="kb-img kb-d" style="background-image:url('/images/social/premium/post-2.webp');"></div></div>
+              <div style="padding:12px 14px;">
+                <div style="font-size:11px;font-weight:600;color:#D4A017;margin-bottom:4px;">Claire's Salon &amp; Spa</div>
+                <p style="font-size:12px;color:#4b5563;line-height:1.45;margin:0;">Reactive skin deserves a careful touch.</p>
+              </div>
+            </article>
+            <article style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+              <div class="kb-tile"><div class="kb-img kb-a" style="background-image:url('/images/social/premium/post-3.webp');"></div></div>
+              <div style="padding:12px 14px;">
+                <div style="font-size:11px;font-weight:600;color:#D4A017;margin-bottom:4px;">Claire's Salon &amp; Spa</div>
+                <p style="font-size:12px;color:#4b5563;line-height:1.45;margin:0;">Get ready for summer with our Detox Body Wrap.</p>
+              </div>
+            </article>
+            <article style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+              <div class="kb-tile"><div class="kb-img kb-c" style="background-image:url('/images/social/premium/post-4.webp');"></div></div>
+              <div style="padding:12px 14px;">
+                <div style="font-size:11px;font-weight:600;color:#D4A017;margin-bottom:4px;">Claire's Salon &amp; Spa</div>
+                <p style="font-size:12px;color:#4b5563;line-height:1.45;margin:0;">Custom essential oils can shift your mood in minutes.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+
+      <div class="section featured-section">
+        <div class="container">
+          <h2 class="section-title">Our Featured Services</h2>
+          <p class="section-subtitle">Discover our most popular treatments</p>
+          <div class="featured-grid" id="featuredServices">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+
+      <div class="section reviews-section">
+        <div class="container">
+          <h2 class="section-title">What Our Clients Say</h2>
+          <p class="section-subtitle">Real reviews from real clients</p>
+          <div class="reviews-carousel-wrapper">
+            <button class="carousel-btn carousel-prev" id="reviewPrev" aria-label="Previous review">&lsaquo;</button>
+            <div class="reviews-carousel" id="reviewsCarousel">
+              <!-- Populated by JS -->
+            </div>
+            <button class="carousel-btn carousel-next" id="reviewNext" aria-label="Next review">&rsaquo;</button>
+          </div>
+          <div class="carousel-dots" id="carouselDots"></div>
+        </div>
+      </div>
+
+      <div class="section about-section">
+        <div class="container about-grid">
+          <div class="about-content">
+            <h2 class="section-title text-left" id="aboutTitle">About</h2>
+            <p id="aboutText1"></p>
+            <p id="aboutText2"></p>
+            <div class="about-stats">
+              <div class="stat-item"><span class="stat-number">4</span><span class="stat-label">Expert Stylists</span></div>
+              <div class="stat-item"><span class="stat-number">20+</span><span class="stat-label">Services</span></div>
+              <div class="stat-item"><span class="stat-number">4.8</span><span class="stat-label">Avg Rating</span></div>
+            </div>
+          </div>
+          <div class="about-image">
+            <img src="images/gallery/salon-4.jpg" alt="Salon interior" style="width:100%;height:100%;object-fit:cover;border-radius:16px;" />
+          </div>
+        </div>
+      </div>
+
+      <!-- DEMO_ONLY:START -->
+      <!-- MoonFlower AI promo: links to the pricing grid below -->
+      <div class="section moonflower-cta demo-hide" style="background:linear-gradient(135deg,#5B2C87,#1A1A2E);color:#fff;padding:64px 20px;text-align:center;">
+        <div class="container" style="max-width:720px;margin:0 auto;">
+          <div style="font-family:'Poppins',sans-serif;font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#D4A017;margin-bottom:12px;">MoonFlower AI</div>
+          <h2 style="font-family:'Playfair Display',serif;font-size:clamp(28px,4vw,40px);font-weight:700;margin-bottom:14px;line-height:1.2;">Ready to build yours?</h2>
+          <p style="font-size:16px;color:rgba(255,255,255,.85);max-width:540px;margin:0 auto 28px;">Tell us about your salon and we'll launch your site in days, not months. With a smart chat assistant, voice bot, and online booking built in.</p>
+          <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+            <a href="#pricing"
+               style="background:#D4A017;color:#1A1A2E;padding:14px 32px;border-radius:999px;font-family:'Poppins',sans-serif;font-weight:700;font-size:15px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;">
+              See our plans
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      <!-- DEMO_ONLY:END -->
+
+      <!-- DEMO_ONLY:START -->
+      <!-- MoonFlower AI pricing grid — three tiers, form-first (Stripe deferred).
+           Cards are rendered by /js/pricing.js pulling /api/moonflower/plans. -->
+      <section class="mf-pricing demo-hide" id="pricing" aria-label="MoonFlower AI pricing plans">
+        <div class="mf-pricing-container">
+          <div class="mf-pricing-header">
+            <div class="mf-pricing-eyebrow">Pricing</div>
+            <h2 class="mf-pricing-title">Pick a plan. We build your site.</h2>
+            <p class="mf-pricing-sub">20% nonrefundable token at intake. Balance invoiced only after your site goes live and you approve.</p>
+          </div>
+          <div class="mf-pricing-grid" id="mfPricingGrid">
+            <div class="mf-pricing-loading">Loading plans...</div>
+          </div>
+          <p class="mf-pricing-fine">
+            No payment up front. Fill the intake form and we build your site first.
+            <a href="/terms.html" target="_blank" rel="noopener">Terms</a> ·
+            <a href="/privacy.html" target="_blank" rel="noopener">Privacy</a>
+          </p>
+        </div>
+      </section>
+      <!-- DEMO_ONLY:END -->
+    </section>
+
+    <!-- SERVICES PAGE -->
+    <section class="page" id="page-services">
+      <div class="page-header">
+        <h1 class="page-title">Our Services</h1>
+        <p class="page-subtitle">Explore our full menu of beauty treatments</p>
+      </div>
+      <div class="container">
+        <div class="category-tabs" id="categoryTabs">
+          <button class="tab-btn active" data-category="all">All</button>
+          <button class="tab-btn" data-category="Hair">Hair</button>
+          <button class="tab-btn" data-category="Nails">Nails</button>
+          <button class="tab-btn" data-category="Skin">Skin</button>
+          <button class="tab-btn" data-category="Makeup">Makeup</button>
+        </div>
+        <div class="services-grid" id="servicesGrid">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- BOOK PAGE -->
+    <section class="page" id="page-book">
+      <div class="page-header">
+        <h1 class="page-title">Book an Appointment</h1>
+        <p class="page-subtitle">Schedule your next visit in just a few steps</p>
+      </div>
+      <div class="container">
+        <div class="booking-progress">
+          <div class="progress-step active" data-step="1"><span class="step-num">1</span><span class="step-label" data-term="service">Service</span></div>
+          <div class="progress-line"></div>
+          <div class="progress-step" data-step="2"><span class="step-num">2</span><span class="step-label" data-term="provider">Stylist</span></div>
+          <div class="progress-line"></div>
+          <div class="progress-step" data-step="3"><span class="step-num">3</span><span class="step-label">Date & Time</span></div>
+          <div class="progress-line"></div>
+          <div class="progress-step" data-step="4"><span class="step-num">4</span><span class="step-label">Details</span></div>
+          <div class="progress-line"></div>
+          <div class="progress-step" data-step="5"><span class="step-num">5</span><span class="step-label">Confirm</span></div>
+        </div>
+
+        <!-- Step 1: Select Service -->
+        <div class="booking-step active" id="bookStep1">
+          <h2 class="step-title">Choose a Service</h2>
+          <div class="book-category-tabs" id="bookCategoryTabs">
+            <button class="tab-btn active" data-category="all">All</button>
+            <button class="tab-btn" data-category="Hair">Hair</button>
+            <button class="tab-btn" data-category="Nails">Nails</button>
+            <button class="tab-btn" data-category="Skin">Skin</button>
+            <button class="tab-btn" data-category="Makeup">Makeup</button>
+          </div>
+          <div class="book-services-grid" id="bookServicesGrid">
+            <!-- Populated by JS -->
+          </div>
+          <div class="step-actions">
+            <button class="btn btn-primary" id="bookStep1Next" disabled>Next: Choose Stylist</button>
+          </div>
+        </div>
+
+        <!-- Step 2: Select Provider -->
+        <div class="booking-step" id="bookStep2">
+          <h2 class="step-title">Choose Your <span data-term="provider">Stylist</span></h2>
+          <div class="staff-grid" id="bookStaffGrid">
+            <!-- Populated by JS -->
+          </div>
+          <div class="step-actions">
+            <button class="btn btn-outline" id="bookStep2Back">Back</button>
+            <button class="btn btn-primary" id="bookStep2Next" disabled>Next: Pick Date & Time</button>
+          </div>
+        </div>
+
+        <!-- Step 3: Pick Date & Time -->
+        <div class="booking-step" id="bookStep3">
+          <h2 class="step-title">Pick Date & Time</h2>
+          <div class="datetime-picker">
+            <div class="date-picker-section">
+              <label class="form-label">Select Date</label>
+              <input type="date" class="form-input" id="bookDate">
+            </div>
+            <div class="time-picker-section">
+              <label class="form-label">Available Time Slots</label>
+              <div class="time-slots" id="timeSlots">
+                <p class="slots-placeholder">Please select a date to see available times.</p>
+              </div>
+            </div>
+          </div>
+          <div class="step-actions">
+            <button class="btn btn-outline" id="bookStep3Back">Back</button>
+            <button class="btn btn-primary" id="bookStep3Next" disabled>Next: Your Details</button>
+          </div>
+        </div>
+
+        <!-- Step 4: Customer Details -->
+        <div class="booking-step" id="bookStep4">
+          <h2 class="step-title">Your Details</h2>
+          <form class="booking-form" id="bookingForm">
+            <div class="form-group">
+              <label class="form-label" for="bookName">Full Name *</label>
+              <input type="text" class="form-input" id="bookName" required placeholder="Your full name">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="bookEmail">Email *</label>
+              <input type="email" class="form-input" id="bookEmail" required placeholder="your@email.com">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="bookPhone">Phone</label>
+              <input type="tel" class="form-input" id="bookPhone" placeholder="(555) 123-4567">
+            </div>
+            <div class="form-group" id="bookServiceAddressGroup" style="display:none;">
+              <label class="form-label" for="bookServiceAddress">Service Address *</label>
+              <input type="text" class="form-input" id="bookServiceAddress" placeholder="Street address where service is needed">
+              <small style="color:var(--gray-500);font-size:0.82rem;display:block;margin-top:4px;">We'll dispatch to this address at the scheduled time.</small>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="bookNotes">Special Requests</label>
+              <textarea class="form-input form-textarea" id="bookNotes" rows="3" placeholder="Any special requests or notes..."></textarea>
+            </div>
+          </form>
+          <div class="booking-summary" id="bookingSummary">
+            <!-- Populated by JS -->
+          </div>
+          <div class="step-actions">
+            <button class="btn btn-outline" id="bookStep4Back">Back</button>
+            <button class="btn btn-primary" id="bookStep4Next">Confirm Booking</button>
+          </div>
+        </div>
+
+        <!-- Step 5: Confirmation -->
+        <div class="booking-step" id="bookStep5">
+          <div class="confirmation-content" id="confirmationContent">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GALLERY PAGE -->
+    <section class="page" id="page-gallery">
+      <div class="page-header">
+        <h1 class="page-title">Our Gallery</h1>
+        <p class="page-subtitle">A glimpse into our work and atmosphere</p>
+      </div>
+      <div class="container">
+        <div class="gallery-grid" id="galleryGrid">
+          <div class="gallery-empty">Loading gallery...</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT PAGE -->
+    <section class="page" id="page-contact">
+      <div class="page-header">
+        <h1 class="page-title">Contact Us</h1>
+        <p class="page-subtitle">We would love to hear from you</p>
+      </div>
+      <div class="container">
+        <div class="contact-grid">
+          <div class="contact-info">
+            <div class="contact-card">
+              <div class="contact-icon">&#128205;</div>
+              <h3>Visit Us</h3>
+              <p id="contactAddress">123 Main Street, Louisville, KY 40202</p>
+            </div>
+            <div class="contact-card">
+              <div class="contact-icon">&#128222;</div>
+              <h3>Call Us</h3>
+              <p id="contactPhone">(502) 555-0123</p>
+            </div>
+            <div class="contact-card">
+              <div class="contact-icon">&#9993;</div>
+              <h3>Email Us</h3>
+              <p id="contactEmail">hello@luxesalon.com</p>
+            </div>
+            <div class="contact-card">
+              <div class="contact-icon">&#128336;</div>
+              <h3>Hours</h3>
+              <div id="contactHours">
+                <p>Mon - Fri: 9:00 AM - 7:00 PM</p>
+                <p>Saturday: 9:00 AM - 5:00 PM</p>
+                <p>Sunday: Closed</p>
+              </div>
+            </div>
+          </div>
+          <div class="contact-form-wrapper">
+            <h2>Send Us a Message</h2>
+            <form class="contact-form" id="contactForm">
+              <div class="form-group">
+                <label class="form-label" for="contactFormName">Name</label>
+                <input type="text" class="form-input" id="contactFormName" required placeholder="Your name">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="contactFormEmail">Email</label>
+                <input type="email" class="form-input" id="contactFormEmail" required placeholder="your@email.com">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="contactFormSubject">Subject</label>
+                <input type="text" class="form-input" id="contactFormSubject" required placeholder="How can we help?">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="contactFormMessage">Message</label>
+                <textarea class="form-input form-textarea" id="contactFormMessage" rows="5" required placeholder="Your message..."></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary btn-block">Send Message</button>
+            </form>
+            <div class="map-placeholder">
+              <div class="map-inner">
+                <span class="map-pin">&#128205;</span>
+                <p>123 Main Street, Louisville, KY 40202</p>
+                <a href="https://maps.google.com/?q=123+Main+Street+Louisville+KY+40202" target="_blank" rel="noopener" class="btn btn-outline btn-sm">Open in Google Maps</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- APPOINTMENTS PAGE -->
+    <section class="page" id="page-appointments">
+      <div class="page-header">
+        <h1 class="page-title">My Appointments</h1>
+        <p class="page-subtitle">View and manage your bookings</p>
+      </div>
+      <div class="container">
+        <div class="appointments-list" id="appointmentsList">
+          <div class="loading-spinner">Loading your appointments...</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ADMIN PAGE -->
+    <section class="page" id="page-admin">
+      <div class="page-header">
+        <h1 class="page-title">Admin Dashboard</h1>
+        <p class="page-subtitle">Business overview and management</p>
+      </div>
+      <div class="container">
+        <div class="admin-stats" id="adminStats">
+          <!-- Populated by JS -->
+        </div>
+        <div class="admin-section">
+          <div class="admin-header">
+            <h2>Appointments</h2>
+            <div class="admin-filters">
+              <input type="date" class="form-input" id="adminDateFilter">
+              <select class="form-input" id="adminStatusFilter">
+                <option value="">All Statuses</option>
+                <option value="confirmed">Confirmed</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+              <button class="btn btn-primary btn-sm" id="adminFilterBtn">Filter</button>
+            </div>
+          </div>
+          <div class="admin-table-wrapper">
+            <table class="admin-table" id="adminTable">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Time</th>
+                  <th>Customer</th>
+                  <th>Service</th>
+                  <th>Stylist</th>
+                  <th>Price</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="adminTableBody">
+                <!-- Populated by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="admin-section">
+          <div class="admin-header">
+            <h2>Services</h2>
+            <button class="btn btn-primary btn-sm" id="adminAddServiceBtn">+ Add Service</button>
+          </div>
+          <div id="adminServicesList" class="admin-crud-list">
+            <div class="loading-spinner">Loading services...</div>
+          </div>
+        </div>
+
+        <div class="admin-section">
+          <div class="admin-header">
+            <h2>Staff</h2>
+            <button class="btn btn-primary btn-sm" id="adminAddStaffBtn">+ Add Staff</button>
+          </div>
+          <div id="adminStaffList" class="admin-crud-list">
+            <div class="loading-spinner">Loading staff...</div>
+          </div>
+        </div>
+
+        <div class="admin-section">
+          <div class="admin-header">
+            <h2>Gallery</h2>
+            <button class="btn btn-primary btn-sm" id="adminAddGalleryBtn">+ Add Image</button>
+          </div>
+          <div id="adminGalleryList" class="admin-crud-list">
+            <div class="loading-spinner">Loading gallery...</div>
+          </div>
+        </div>
+
+        <div class="admin-section">
+          <div class="admin-header">
+            <h2>Customers</h2>
+          </div>
+          <div id="adminCustomersList" class="admin-crud-list">
+            <div class="loading-spinner">Loading customers...</div>
+          </div>
+        </div>
+
+        <div class="admin-section">
+          <div class="admin-header">
+            <h2>Feedback</h2>
+          </div>
+          <div id="adminFeedbackList" class="admin-crud-list">
+            <div class="loading-spinner">Loading feedback...</div>
+          </div>
+        </div>
+
+        <!-- Post approval queue: drafts created by the AI pipeline waiting
+             for the operator to review before they're published. -->
+        <div class="admin-section">
+          <div class="admin-header">
+            <h2>Social posts — pending approval</h2>
+            <span class="admin-header-meta" id="postQueueMeta"></span>
+          </div>
+          <div id="postQueueList" class="post-queue-list">
+            <div class="loading-spinner">Loading queue...</div>
+          </div>
+        </div>
+
+        <div class="admin-section">
+          <div class="admin-header">
+            <h2>Export</h2>
+          </div>
+          <div class="admin-export-row">
+            <a class="btn btn-outline btn-sm" id="adminExportBtn" href="#">Download appointments as CSV</a>
+            <span class="admin-export-note">Includes all appointments with customer, service, staff, and revenue data.</span>
+          </div>
+        </div>
+
+        <!-- Customer profile modal -->
+        <div class="modal-overlay" id="customerProfileModal">
+          <div class="modal">
+            <button class="modal-close" id="customerProfileClose">&times;</button>
+            <div id="customerProfileBody"></div>
+          </div>
+        </div>
+
+        <!-- Simple form modal for admin CRUD -->
+        <div class="modal-overlay" id="adminFormModal">
+          <div class="modal">
+            <button class="modal-close" id="adminFormModalClose">&times;</button>
+            <h2 class="modal-title" id="adminFormTitle">Add</h2>
+            <div id="adminFormBody"></div>
+            <div class="form-error" id="adminFormError"></div>
+            <div class="step-actions">
+              <button class="btn btn-outline" id="adminFormCancel">Cancel</button>
+              <button class="btn btn-primary" id="adminFormSave">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+  </main>
+
+  <!-- Auth Modal -->
+  <div class="modal-overlay" id="authModal">
+    <div class="modal">
+      <button class="modal-close" id="authModalClose">&times;</button>
+      <div class="modal-tabs">
+        <button class="modal-tab active" id="loginTab">Login</button>
+        <button class="modal-tab" id="registerTab">Register</button>
+      </div>
+      <!-- Login Form -->
+      <form class="modal-form" id="loginForm">
+        <div class="form-group">
+          <label class="form-label" for="loginEmail">Email</label>
+          <input type="email" class="form-input" id="loginEmail" required placeholder="your@email.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="loginPassword">Password</label>
+          <input type="password" class="form-input" id="loginPassword" required placeholder="Your password">
+        </div>
+        <div class="form-error" id="loginError"></div>
+        <button type="submit" class="btn btn-primary btn-block">Login</button>
+      </form>
+      <!-- Register Form -->
+      <form class="modal-form" id="registerForm" style="display:none">
+        <div class="form-group">
+          <label class="form-label" for="regName">Full Name</label>
+          <input type="text" class="form-input" id="regName" required placeholder="Your full name">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="regEmail">Email</label>
+          <input type="email" class="form-input" id="regEmail" required placeholder="your@email.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="regPhone">Phone</label>
+          <input type="tel" class="form-input" id="regPhone" placeholder="(555) 123-4567">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="regPassword">Password</label>
+          <input type="password" class="form-input" id="regPassword" required placeholder="Min 6 characters" minlength="6">
+        </div>
+        <div class="form-error" id="registerError"></div>
+        <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Reschedule Modal -->
+  <div class="modal-overlay" id="rescheduleModal">
+    <div class="modal">
+      <button class="modal-close" id="rescheduleModalClose">&times;</button>
+      <h2 class="modal-title">Reschedule Appointment</h2>
+      <div class="form-group">
+        <label class="form-label" for="rescheduleDate">New Date</label>
+        <input type="date" class="form-input" id="rescheduleDate">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Available Time Slots</label>
+        <div class="time-slots" id="rescheduleSlots">
+          <p class="slots-placeholder">Select a date to see available times.</p>
+        </div>
+      </div>
+      <div class="form-error" id="rescheduleError"></div>
+      <div class="step-actions">
+        <button class="btn btn-outline" id="rescheduleCancelBtn">Cancel</button>
+        <button class="btn btn-primary" id="rescheduleConfirmBtn" disabled>Reschedule</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chat Widget -->
+  <button class="chat-fab" id="chatFab" aria-label="Open chat">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+    </svg>
+  </button>
+
+  <div class="chat-panel" id="chatPanel">
+    <div class="chat-header">
+      <div class="chat-header-info">
+        <span class="chat-avatar">L</span>
+        <div>
+          <h3 id="chatHeaderName">Assistant</h3>
+          <span class="chat-status">Online</span>
+        </div>
+      </div>
+      <button class="chat-close" id="chatClose" aria-label="Close chat">&times;</button>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="chat-msg bot">
+        <div class="chat-bubble" id="chatWelcome">Welcome! How can I assist you today?</div>
+      </div>
+    </div>
+    <form class="chat-input-area" id="chatForm">
+      <input type="text" class="chat-input" id="chatInput" placeholder="Ask me anything..." autocomplete="off">
+      <button type="button" class="chat-mic" id="chatMic" aria-label="Voice input">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+          <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+          <line x1="12" y1="19" x2="12" y2="23"></line>
+          <line x1="8" y1="23" x2="16" y2="23"></line>
+        </svg>
+      </button>
+      <button type="submit" class="chat-send" id="chatSend" aria-label="Send message">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="22" y1="2" x2="11" y2="13"></line>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+        </svg>
+      </button>
+    </form>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer" id="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h3 id="footerBrand">Salon & Spa</h3>
+          <p>Where Beauty Meets Excellence</p>
+          <p class="footer-address">123 Main Street, Louisville, KY 40202</p>
+        </div>
+        <div class="footer-links">
+          <h4>Quick Links</h4>
+          <a href="#home">Home</a>
+          <a href="#services">Services</a>
+          <a href="#book">Book Now</a>
+          <a href="#gallery">Gallery</a>
+          <a href="#contact">Contact</a>
+        </div>
+        <div class="footer-hours">
+          <h4>Hours</h4>
+          <p>Mon - Fri: 9:00 AM - 7:00 PM</p>
+          <p>Saturday: 9:00 AM - 5:00 PM</p>
+          <p>Sunday: Closed</p>
+        </div>
+        <div class="footer-social">
+          <h4>Follow Us</h4>
+          <p>@luxesalon</p>
+          <p>(502) 555-0123</p>
+          <p>hello@luxesalon.com</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p id="footerCopy"></p>
+        <!-- DEMO_ONLY:START -->
+        <p style="margin-top:8px;font-size:12px;opacity:.7;">
+          Built by <a href="https://moonflowerai.com" style="color:inherit;text-decoration:underline;" target="_blank" rel="noopener">MoonFlower AI</a>.
+          <a href="/salonai/intake" style="color:inherit;text-decoration:underline;margin-left:6px;">Get your own salon site &rarr;</a>
+        </p>
+        <!-- DEMO_ONLY:END --></div>
+    </div>
+  </footer>
+
+  <script src="/salonai/js/app.js?v=5"></script>
+  <!-- DEMO_ONLY:START -->
+  <script src="/salonai/js/pricing.js?v=1"></script>
+  <!-- DEMO_ONLY:END -->
+  <script>
+    // Wire up every .nav-demo-item dropdown (Demo + Social Media Promos).
+    // Each toggle opens its own menu, closes others, and closes when you
+    // click outside or pick an option.
+    (function () {
+      const items = document.querySelectorAll('.nav-demo-item');
+      if (!items.length) return;
+
+      items.forEach(function (item) {
+        const toggle = item.querySelector('.nav-demo-toggle');
+        if (!toggle) return;
+
+        toggle.addEventListener('click', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          // Close any other open dropdown(s) first
+          items.forEach(function (other) {
+            if (other !== item) other.classList.remove('open');
+          });
+          item.classList.toggle('open');
+          toggle.setAttribute('aria-expanded', item.classList.contains('open'));
+        });
+
+        // Close after picking an option
+        item.querySelectorAll('.nav-demo-link').forEach(function (link) {
+          link.addEventListener('click', function () {
+            item.classList.remove('open');
+          });
+        });
+      });
+
+      // Close all dropdowns on outside click
+      document.addEventListener('click', function (e) {
+        items.forEach(function (item) {
+          if (!item.contains(e.target)) item.classList.remove('open');
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

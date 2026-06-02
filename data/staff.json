@@ -1,0 +1,73 @@
+[
+  {
+    "id": "staff-001",
+    "name": "Sophia Martinez",
+    "role": "Senior Stylist & Colorist",
+    "specialties": ["Balayage", "Color", "Highlights", "Haircut", "Keratin Treatment"],
+    "avatar": "\ud83d\udc69\u200d\ud83c\udfa8",
+    "workDays": [1, 2, 3, 4, 5],
+    "workHours": { "start": "09:00", "end": "17:00" },
+    "breakTime": { "start": "12:00", "end": "13:00" }
+  },
+  {
+    "id": "staff-002",
+    "name": "James Chen",
+    "role": "Master Stylist",
+    "specialties": ["Haircut", "Blowout", "Deep Conditioning", "Color"],
+    "avatar": "\ud83d\udc87",
+    "workDays": [1, 2, 3, 5, 6],
+    "workHours": { "start": "10:00", "end": "19:00" },
+    "breakTime": { "start": "13:00", "end": "14:00" }
+  },
+  {
+    "id": "staff-003",
+    "name": "Aaliyah Johnson",
+    "role": "Nail Technician & Esthetician",
+    "specialties": ["Manicure", "Pedicure", "Gel Nails", "Acrylic Nails", "Nail Art", "Facial", "Waxing"],
+    "avatar": "\ud83d\udc85",
+    "workDays": [1, 2, 4, 5, 6],
+    "workHours": { "start": "09:00", "end": "17:00" },
+    "breakTime": { "start": "12:30", "end": "13:30" }
+  },
+  {
+    "id": "staff-004",
+    "name": "Olivia Brooks",
+    "role": "Makeup Artist & Lash Specialist",
+    "specialties": ["Bridal Makeup", "Party Makeup", "Lash Extensions", "Facial", "Chemical Peel", "Microdermabrasion"],
+    "avatar": "\ud83d\udc84",
+    "workDays": [2, 3, 4, 5, 6],
+    "workHours": { "start": "10:00", "end": "18:00" },
+    "breakTime": { "start": "13:00", "end": "14:00" }
+  },
+  {
+    "id": "staff-005",
+    "name": "Olivia Roe",
+    "role": "Makeup Artist & Lash Specialist",
+    "specialties": ["Bridal Makeup", "Party Makeup", "Lash Extensions", "Facial", "Chemical Peel", "Microdermabrasion"],
+    "avatar": "\ud83d\udc84",
+    "workDays": [2, 3, 4, 5, 6],
+    "workHours": { "start": "10:00", "end": "18:00" },
+    "breakTime": { "start": "13:00", "end": "14:00" }
+  },
+  {
+    "id": "staff-006",
+    "name": "Kati Dawson",
+    "role": "Makeup Artist & Lash Specialist",
+    "specialties": ["Bridal Makeup", "Party Makeup", "Lash Extensions", "Facial", "Chemical Peel", "Microdermabrasion"],
+    "avatar": "\ud83d\udc84",
+    "workDays": [2, 3, 4, 5, 6],
+    "workHours": { "start": "10:00", "end": "18:00" },
+    "breakTime": { "start": "13:00", "end": "14:00" }
+  },
+  {
+    "id": "staff-007",
+    "name": "Jeniffer Williams",
+    "role": "Makeup Artist & Lash Specialist",
+    "specialties": ["Manicure", "Pedicure", "Gel Nails", "Acrylic Nails", "Nail Art", "Facial", "Waxing"],
+    "avatar": "\ud83d\udc84",
+    "workDays": [2, 3, 4, 5, 6],
+    "workHours": { "start": "10:00", "end": "18:00" },
+    "breakTime": { "start": "13:00", "end": "14:00" }
+  }
+
+]

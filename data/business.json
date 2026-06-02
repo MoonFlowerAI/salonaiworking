@@ -1,0 +1,36 @@
+{
+  "name": "Demo Salon & Spa",
+  "tagline": "Where Beauty Meets Excellence",
+  "phone": "(555) 000-0000",
+  "email": "hello@moonflowerai.com",
+  "address": "Louisville, KY",
+  "hours": {
+    "mon-fri": "9:00 AM - 7:00 PM",
+    "sat": "9:00 AM - 5:00 PM",
+    "sun": "Closed"
+  },
+  "social": {
+    "instagram": "",
+    "facebook": ""
+  },
+  "industry": "salon",
+  "terminology": {
+    "provider": "Stylist",
+    "providers": "Stylists",
+    "service": "Service",
+    "services": "Services",
+    "appointment": "Appointment",
+    "appointments": "Appointments",
+    "customer": "Customer"
+  },
+  "categories": ["Hair", "Nails", "Skin", "Makeup"],
+  "theme": {
+    "primary": "#b76e79",
+    "primaryDark": "#8e4a54",
+    "dark": "#1a1a2e",
+    "cream": "#faf3e0",
+    "gold": "#d4a574"
+  },
+  "serviceLocation": "in-shop",
+  "googleReviewUrl": ""
+}

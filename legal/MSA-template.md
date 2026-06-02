@@ -1,0 +1,315 @@
+# Master Services Agreement (MSA)
+
+**MoonFlower AI LLC — SalonAI Services**
+
+**Plain-English template — ready to paste into Rocket Lawyer / LegalZoom /
+lawyer review before any client signs. Replace all `[[BRACKETS]]` with the
+specific client's info.**
+
+---
+
+## Parties
+
+This Agreement is entered into on `[[EFFECTIVE_DATE]]` between:
+
+- **Provider:** MoonFlower AI LLC, a Kentucky limited liability company
+  with its principal place of business at Louisville, Kentucky ("MoonFlower,"
+  "we," or "us").
+- **Client:** `[[CLIENT_LEGAL_NAME]]`, `[[CLIENT_ENTITY_TYPE]]`
+  (e.g. sole proprietor / LLC / corporation) located at
+  `[[CLIENT_ADDRESS]]` ("Client," "you").
+
+Together, "the Parties."
+
+---
+
+## 1. Services
+
+MoonFlower will provide the following services (the "Services") under the
+`[[TIER: Basic / Pro / Premium]]` plan:
+
+### 1.1 Basic tier
+- Custom salon website on a subdomain or custom domain you provide
+- 24/7 AI chat assistant
+- Online booking and per-stylist calendar
+- Email appointment confirmations and reminders
+- SMS appointment reminders (subject to TCPA consent)
+- Admin dashboard for bookings, staff, and services
+- Privacy Policy and Terms of Service pages pre-populated with your business info
+
+### 1.2 Pro tier (includes everything in Basic, plus)
+- Installable mobile web app (PWA)
+- Social media promotion on one platform of your choice (Facebook OR Instagram)
+- Four (4) AI-generated social media posts per month — caption + image
+- Priority email support (next business-day response)
+
+### 1.3 Premium tier (includes everything in Pro, plus)
+- AI voice phone assistant with a dedicated phone number
+- Social promotion on four platforms (TikTok, YouTube Shorts, Instagram, Facebook)
+- Twelve (12) AI-generated social media posts per month
+- Same-day phone and email support (business hours)
+- One 30-minute monthly strategy call
+
+---
+
+## 2. Fees & Payment
+
+### 2.1 Setup fee
+The one-time setup fee for your tier is **$[[SETUP_FEE]]**, payable as follows:
+- **20% nonrefundable token** of **$[[TOKEN]]** due on signing this Agreement
+  and submission of your intake form. This payment is nonrefundable regardless
+  of whether the project proceeds.
+- **Remaining 80% ($[[BALANCE]])** invoiced and due upon Client's approval
+  of the completed site ("Launch Approval").
+
+### 2.2 Monthly subscription
+Starting on the day of Launch Approval, Client pays **$[[MONTHLY_FEE]]
+per month** via recurring ACH or card on file. The subscription continues
+until cancelled per Section 9.
+
+### 2.3 Late payments
+Invoices unpaid 15 days past the due date accrue a 1.5% monthly late fee.
+MoonFlower may suspend Services for accounts more than 30 days overdue.
+
+### 2.4 Taxes
+Fees are exclusive of applicable sales tax. Where Kentucky (or client's
+state) imposes sales tax on SaaS, MoonFlower will add tax as a line item
+on invoices.
+
+---
+
+## 3. Term
+
+This Agreement begins on the Effective Date and continues month-to-month
+after Launch Approval. Either party may terminate by giving **30 days
+written notice** via email to `hello@moonflowerai.com` (to MoonFlower) or
+to the email on file (to Client).
+
+---
+
+## 4. Client Responsibilities
+
+Client agrees to:
+
+1. Provide accurate and complete information in the intake form (business
+   details, services, staff, photos, branding preferences).
+2. Respond to MoonFlower within 3 business days when information or approval
+   is requested, or acknowledge that timelines shift accordingly.
+3. Own or hold a license to all content (photos, logos, text) Client submits,
+   and grant MoonFlower a non-exclusive license to use it for this project.
+4. Not resell, sublicense, or white-label the Services without written consent.
+5. Comply with applicable law in how Client collects and uses customer data
+   through the site (including appointment bookings and SMS consent).
+6. Maintain a valid payment method on file for the monthly subscription.
+
+---
+
+## 5. MoonFlower Responsibilities
+
+MoonFlower agrees to:
+
+1. Deliver the site in good faith within the target timeline of 5–10 business
+   days after the intake form is complete. This is a target, not a guarantee;
+   delays caused by Client response time or third-party outages may extend it.
+2. Host the site on commercially reasonable infrastructure (currently Railway)
+   with a target uptime of 99% monthly, excluding scheduled maintenance.
+3. Keep your data backed up weekly during active service.
+4. Use industry-standard security practices (HTTPS, password hashing, no
+   storage of payment card data).
+5. Make reasonable efforts to keep AI assistant responses accurate, though
+   Client acknowledges AI responses may occasionally be incorrect
+   (see Section 7).
+
+---
+
+## 6. Intellectual Property
+
+### 6.1 Your content
+You retain ownership of all content you provide — business name, logos,
+photos, services, staff bios, and any customer data generated by your site.
+You grant MoonFlower a non-exclusive license to use that content for the
+purpose of operating your site.
+
+### 6.2 Our platform
+MoonFlower retains ownership of the underlying platform code, scaffolder,
+AI pipelines, and templates used to build your site. You receive a
+non-exclusive license to use the site for your business for as long as
+you maintain an active subscription.
+
+### 6.3 Generated content
+AI-generated images, captions, and video clips produced for your site are
+delivered to you for unrestricted commercial use. You acknowledge that
+AI-generated content is not copyrightable under current U.S. law, and
+therefore cannot be exclusively owned by either party.
+
+### 6.4 After cancellation
+If this Agreement terminates, MoonFlower will provide an export of your
+customer booking data within 14 days on request. The site itself may be
+taken offline 30 days after the termination date.
+
+---
+
+## 7. AI Assistant Disclosure
+
+Your site includes AI-powered features including a chat assistant and, at
+Premium tier, a voice assistant. These are designed to help customers with
+routine questions and bookings, but may occasionally:
+
+- Provide inaccurate information
+- Misunderstand customer requests
+- Quote incorrect pricing or hours if your admin data is out of date
+
+The site displays a small disclaimer noting this. You agree to keep your
+business data (hours, services, pricing) current, and MoonFlower is not
+liable for customer disputes arising from AI errors that could have been
+avoided by up-to-date information. For decisions that matter (medical,
+legal, emergencies), the assistant directs customers to contact a human.
+
+---
+
+## 8. Warranties and Disclaimers
+
+### 8.1 Our warranty
+MoonFlower warrants that it will perform the Services in a professional and
+workmanlike manner consistent with industry standards.
+
+### 8.2 Disclaimer
+**EXCEPT AS EXPRESSLY STATED, THE SERVICES ARE PROVIDED "AS IS" AND
+"AS AVAILABLE." MOONFLOWER DISCLAIMS ALL OTHER WARRANTIES, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.**
+
+### 8.3 Third parties
+The site relies on third-party services (Groq for AI chat, Replicate for
+image/video generation, Brevo for email, Twilio for SMS, Stripe for payments,
+Railway for hosting, and potentially Vapi for voice AI at the Premium tier).
+MoonFlower is not responsible for outages or changes to these services;
+we will make reasonable efforts to migrate to alternatives if a provider
+becomes unavailable.
+
+---
+
+## 9. Limitation of Liability
+
+To the maximum extent permitted by law, **MoonFlower's total liability
+under this Agreement for any and all claims, whether in contract, tort,
+or otherwise, is limited to the total fees paid by Client to MoonFlower
+during the twelve (12) months immediately preceding the claim.**
+
+In no event is MoonFlower liable for:
+- Lost profits or revenue
+- Lost data (beyond what reasonable backups can restore)
+- Indirect, incidental, special, or consequential damages
+- Third-party claims related to Client's use of the site
+
+This limitation applies even if MoonFlower has been advised of the
+possibility of such damages.
+
+---
+
+## 10. Indemnification
+
+### 10.1 By Client
+Client will defend, indemnify, and hold MoonFlower harmless from any
+third-party claim arising from:
+- Content Client provides that infringes another party's rights
+- Client's misuse of the Services or violation of applicable law
+- Client's customer data handling beyond what MoonFlower has control over
+- Client's product, service, or business operations
+
+### 10.2 By MoonFlower
+MoonFlower will defend, indemnify, and hold Client harmless from any
+third-party claim that MoonFlower's platform infringes that third party's
+intellectual property rights — provided Client notifies MoonFlower promptly
+and allows MoonFlower to control the defense.
+
+---
+
+## 11. Confidentiality
+
+Both parties may receive non-public information from the other
+("Confidential Information"). Each party agrees to:
+- Use Confidential Information only for the purpose of this Agreement
+- Protect it with at least the same care as its own confidential information
+- Not disclose it to third parties without written consent (except to
+  service providers who are themselves bound by confidentiality)
+
+This obligation survives termination for 2 years.
+
+---
+
+## 12. Data Privacy
+
+### 12.1 Who owns what
+- Client owns the customer data generated through Client's site (bookings,
+  customer names, emails, phone numbers, notes).
+- MoonFlower is a data processor; Client is the data controller.
+
+### 12.2 CCPA / similar regulations
+If Client serves customers in California or other jurisdictions with data
+privacy laws, Client is responsible for complying with applicable customer
+data rights (notice, deletion requests). MoonFlower provides reasonable
+technical assistance for deletion requests on request.
+
+### 12.3 Breach notice
+If MoonFlower discovers a security breach affecting Client's data,
+MoonFlower will notify Client within 72 hours with what's known and will
+cooperate on any required customer notifications.
+
+---
+
+## 13. Governing Law and Disputes
+
+This Agreement is governed by the laws of the Commonwealth of Kentucky,
+without regard to conflict-of-law rules. Any dispute must be resolved in
+the state or federal courts located in Jefferson County, Kentucky, unless
+both parties agree in writing to binding arbitration.
+
+---
+
+## 14. Miscellaneous
+
+- **Entire agreement:** This document is the complete agreement between the
+  parties and replaces any prior discussions.
+- **Amendments:** Changes must be in writing signed by both parties
+  (email counts if both parties acknowledge).
+- **Severability:** If any provision is unenforceable, the rest remains
+  in effect.
+- **No agency:** The parties are independent contractors, not partners,
+  employees, or agents of each other.
+- **Assignment:** Neither party may assign this Agreement without the
+  other's written consent, except MoonFlower may assign on a business
+  sale or merger.
+- **Notices:** Email notices to `hello@moonflowerai.com` and to the
+  Client email on file are sufficient written notice.
+
+---
+
+## Signatures
+
+**MoonFlower AI LLC**
+
+Name: `[[MOONFLOWER_SIGNER_NAME]]`
+Title: `[[TITLE]]`
+Date: `[[DATE]]`
+Signature: `_________________________`
+
+**Client: `[[CLIENT_LEGAL_NAME]]`**
+
+Name: `[[CLIENT_SIGNER_NAME]]`
+Title: `[[TITLE]]`
+Date: `[[DATE]]`
+Signature: `_________________________`
+
+---
+
+## Template Notes (delete before sending to client)
+
+- Before using in production, have a Kentucky-licensed attorney review this
+  template. A one-time review should cost $300–$800.
+- HelloSign or DocuSign will let clients sign electronically — $10–$15/mo
+  subscription.
+- Keep a signed copy in your records for each client (PDF in a folder named
+  `contracts/<client-slug>/msa-signed.pdf` is fine for now).
+- Update the `[[BRACKETS]]` programmatically by a future `scripts/generate-msa.mjs`
+  that fills them from the client's registry entry in `data/clients.json`.

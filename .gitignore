@@ -1,0 +1,15 @@
+node_modules/
+.env
+.credentials/
+dev-otp.txt
+
+# Local dev / test outputs
+test-data/out/
+test-results/
+out/
+
+# Business/brand documents (not code)
+MoonflowerAI-Marketing/
+
+# Client-site starter template (separate project — should have its own repo)
+MoonFlower-Salon-Starter/

@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Intakes · MoonFlower Admin</title>
+  <style>
+    :root {
+      --purple: #5B2C87; --purple-dark: #3a1a5a; --purple-light: #f3eeff;
+      --gold: #D4A017; --ink: #1A1A2E; --cream: #faf3e0;
+      --gray-100: #f3f4f6; --gray-200: #e5e7eb; --gray-400: #9ca3af;
+      --gray-500: #6b7280; --gray-600: #4b5563;
+      --green: #059669; --blue: #2563eb; --amber: #d97706; --red: #dc2626;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: var(--gray-100); color: var(--ink); font-size: 14px; }
+
+    /* Login */
+    #loginScreen { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+    .login-card { background: white; border-radius: 16px; padding: 40px; width: 360px; box-shadow: 0 4px 24px rgba(0,0,0,0.1); }
+    .login-card h1 { font-size: 22px; color: var(--purple); margin-bottom: 6px; }
+    .login-card p { color: var(--gray-500); font-size: 13px; margin-bottom: 24px; }
+    .login-card input { width: 100%; padding: 10px 14px; border: 1.5px solid var(--gray-200); border-radius: 8px; font-size: 14px; margin-bottom: 12px; outline: none; }
+    .login-card input:focus { border-color: var(--purple); }
+    .login-error { color: var(--red); font-size: 13px; margin-bottom: 10px; display: none; }
+
+    /* Shell */
+    #appShell { display: none; min-height: 100vh; }
+    .topbar { background: var(--purple); color: white; padding: 0 24px; height: 52px; display: flex; align-items: center; justify-content: space-between; }
+    .topbar-brand { font-size: 16px; font-weight: 700; letter-spacing: 0.3px; }
+    .topbar-brand span { color: var(--gold); }
+    .topbar-right { display: flex; align-items: center; gap: 16px; }
+    .topbar-right a { color: rgba(255,255,255,0.75); font-size: 13px; text-decoration: none; cursor: pointer; }
+    .topbar-right a:hover { color: white; }
+
+    /* Layout */
+    .shell { display: grid; grid-template-columns: 320px 1fr; height: calc(100vh - 52px); overflow: hidden; }
+    @media (max-width: 900px) { .shell { grid-template-columns: 1fr; } }
+
+    /* Sidebar — list */
+    .sidebar { background: white; border-right: 1px solid var(--gray-200); display: flex; flex-direction: column; overflow: hidden; }
+    .sidebar-header { padding: 16px; border-bottom: 1px solid var(--gray-200); }
+    .sidebar-search { width: 100%; padding: 8px 12px; border: 1.5px solid var(--gray-200); border-radius: 8px; font-size: 13px; outline: none; margin-bottom: 10px; }
+    .sidebar-search:focus { border-color: var(--purple); }
+    .filter-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+    .filter-tab { padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1.5px solid var(--gray-200); background: white; color: var(--gray-600); transition: all 0.15s; }
+    .filter-tab.active { background: var(--purple); border-color: var(--purple); color: white; }
+    .intake-list { overflow-y: auto; flex: 1; }
+    .intake-item { padding: 14px 16px; border-bottom: 1px solid var(--gray-200); cursor: pointer; transition: background 0.1s; }
+    .intake-item:hover { background: var(--purple-light); }
+    .intake-item.selected { background: var(--purple-light); border-left: 3px solid var(--purple); }
+    .intake-item-name { font-weight: 600; color: var(--ink); margin-bottom: 2px; }
+    .intake-item-meta { font-size: 12px; color: var(--gray-500); display: flex; justify-content: space-between; align-items: center; }
+    .empty-list { padding: 40px 20px; text-align: center; color: var(--gray-400); font-size: 13px; }
+    .list-loading { padding: 20px; text-align: center; color: var(--gray-400); font-size: 13px; }
+
+    /* Detail pane */
+    .detail { overflow-y: auto; background: var(--gray-100); }
+    .detail-empty { display: flex; align-items: center; justify-content: center; height: 100%; color: var(--gray-400); font-size: 14px; }
+    .detail-inner { padding: 24px; }
+    .detail-topbar { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
+    .detail-salon { font-size: 22px; font-weight: 700; color: var(--purple); }
+    .detail-owner { font-size: 14px; color: var(--gray-600); margin-top: 2px; }
+    .detail-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+    /* Status badge */
+    .badge { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+    .badge-new { background: #dbeafe; color: var(--blue); }
+    .badge-in-progress { background: #fef3c7; color: var(--amber); }
+    .badge-launched { background: #d1fae5; color: var(--green); }
+    .badge-on-hold { background: var(--gray-200); color: var(--gray-600); }
+    .badge-declined { background: #fee2e2; color: var(--red); }
+
+    /* Buttons */
+    .btn { padding: 8px 16px; border-radius: 8px; border: none; font-size: 13px; font-weight: 600; cursor: pointer; transition: opacity 0.15s; }
+    .btn:hover { opacity: 0.85; }
+    .btn-purple { background: var(--purple); color: white; }
+    .btn-outline { background: white; border: 1.5px solid var(--gray-200); color: var(--gray-600); }
+    .btn-sm { padding: 5px 11px; font-size: 12px; }
+
+    /* Status selector */
+    .status-select { padding: 6px 10px; border: 1.5px solid var(--gray-200); border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; outline: none; background: white; }
+
+    /* Cards */
+    .detail-card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 16px; border: 1px solid var(--gray-200); }
+    .detail-card h3 { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--purple); margin-bottom: 14px; }
+    .field-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+    .field-pair { }
+    .field-pair .label { font-size: 11px; color: var(--gray-500); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+    .field-pair .value { font-size: 13px; color: var(--ink); word-break: break-word; }
+    .field-pair .value a { color: var(--purple); text-decoration: none; }
+    .field-pair .value a:hover { text-decoration: underline; }
+    .value-empty { color: var(--gray-400); font-style: italic; }
+
+    /* Checklist values */
+    .tag-list { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag { background: var(--gray-100); border: 1px solid var(--gray-200); padding: 3px 8px; border-radius: 6px; font-size: 12px; color: var(--ink); }
+
+    /* Notes */
+    .notes-area { width: 100%; min-height: 80px; border: 1.5px solid var(--gray-200); border-radius: 8px; padding: 10px 12px; font-size: 13px; font-family: inherit; resize: vertical; outline: none; }
+    .notes-area:focus { border-color: var(--purple); }
+    .notes-save { display: flex; justify-content: flex-end; margin-top: 8px; }
+
+    /* Pagination */
+    .pagination { display: flex; align-items: center; gap: 8px; padding: 12px 16px; border-top: 1px solid var(--gray-200); font-size: 12px; color: var(--gray-500); }
+    .pagination button { padding: 4px 10px; border-radius: 6px; border: 1px solid var(--gray-200); background: white; cursor: pointer; font-size: 12px; }
+    .pagination button:disabled { opacity: 0.4; cursor: not-allowed; }
+  </style>
+</head>
+<body>
+
+<!-- Login -->
+<div id="loginScreen">
+  <div class="login-card">
+    <h1>MoonFlower Admin</h1>
+    <p>Enter your superadmin key to continue.</p>
+    <div class="login-error" id="loginError">Incorrect key. Try again.</div>
+    <input type="password" id="keyInput" placeholder="Superadmin key" onkeydown="if(event.key==='Enter')login()">
+    <button class="btn btn-purple" style="width:100%;padding:11px" onclick="login()">Sign in</button>
+  </div>
+</div>
+
+<!-- App -->
+<div id="appShell">
+  <div class="topbar">
+    <div class="topbar-brand">MoonFlower<span>.</span> &nbsp;<span style="font-weight:400;opacity:0.7;font-size:13px">Intake Manager</span></div>
+    <div class="topbar-right">
+      <span id="intakeCount" style="font-size:13px;opacity:0.7"></span>
+      <a onclick="logout()">Sign out</a>
+    </div>
+  </div>
+
+  <div class="shell">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <input class="sidebar-search" id="searchInput" placeholder="Search salon, name, email..." oninput="debounceSearch()">
+        <div class="filter-tabs">
+          <button class="filter-tab active" data-status="" onclick="setFilter(this, '')">All</button>
+          <button class="filter-tab" data-status="new" onclick="setFilter(this, 'new')">New</button>
+          <button class="filter-tab" data-status="in-progress" onclick="setFilter(this, 'in-progress')">In Progress</button>
+          <button class="filter-tab" data-status="launched" onclick="setFilter(this, 'launched')">Launched</button>
+          <button class="filter-tab" data-status="on-hold" onclick="setFilter(this, 'on-hold')">On Hold</button>
+        </div>
+      </div>
+      <div class="intake-list" id="intakeList">
+        <div class="list-loading">Loading...</div>
+      </div>
+      <div class="pagination" id="pagination"></div>
+    </div>
+
+    <!-- Detail pane -->
+    <div class="detail" id="detailPane">
+      <div class="detail-empty" id="detailEmpty">Select an intake to view details</div>
+      <div class="detail-inner" id="detailContent" style="display:none"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const API = '/api/superadmin';
+  let apiKey = '';
+  let currentFilter = '';
+  let currentPage = 1;
+  let searchTimer = null;
+  let selectedId = null;
+  let total = 0;
+
+  // ── Auth ─────────────────────────────────────────────────────────────────
+  async function login() {
+    const key = document.getElementById('keyInput').value.trim();
+    if (!key) return;
+    // Test the key against a real endpoint
+    const res = await fetch(`${API}/tenants`, { headers: { 'X-Superadmin-Key': key } });
+    if (res.ok) {
+      apiKey = key;
+      sessionStorage.setItem('sa_key', key);
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('appShell').style.display = 'block';
+      loadList();
+    } else {
+      document.getElementById('loginError').style.display = 'block';
+    }
+  }
+
+  function logout() {
+    sessionStorage.removeItem('sa_key');
+    location.reload();
+  }
+
+  // Auto-login if key stored
+  const storedKey = sessionStorage.getItem('sa_key');
+  if (storedKey) {
+    apiKey = storedKey;
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('appShell').style.display = 'block';
+    loadList();
+  }
+
+  // ── List ─────────────────────────────────────────────────────────────────
+  function headers() { return { 'X-Superadmin-Key': apiKey, 'Content-Type': 'application/json' }; }
+
+  async function loadList() {
+    const q = document.getElementById('searchInput').value.trim();
+    const params = new URLSearchParams({ page: currentPage });
+    if (currentFilter) params.set('status', currentFilter);
+    if (q) params.set('q', q);
+
+    document.getElementById('intakeList').innerHTML = '<div class="list-loading">Loading...</div>';
+
+    const res = await fetch(`${API}/intakes?${params}`, { headers: headers() });
+    if (!res.ok) { document.getElementById('intakeList').innerHTML = '<div class="empty-list">Failed to load.</div>'; return; }
+
+    const { intakes, total: t, limit } = await res.json();
+    total = t;
+    document.getElementById('intakeCount').textContent = `${t} intake${t !== 1 ? 's' : ''}`;
+    renderList(intakes);
+    renderPagination(t, limit);
+  }
+
+  function renderList(intakes) {
+    const el = document.getElementById('intakeList');
+    if (!intakes.length) { el.innerHTML = '<div class="empty-list">No intakes found.</div>'; return; }
+    el.innerHTML = intakes.map(i => `
+      <div class="intake-item${i.id === selectedId ? ' selected' : ''}" onclick="selectIntake(${i.id})">
+        <div class="intake-item-name">${esc(i.salon_name || 'Unnamed')}</div>
+        <div style="font-size:12px;color:#6b7280;margin:2px 0">${esc(i.owner_name || '')} &middot; ${esc(i.owner_email || '')}</div>
+        <div class="intake-item-meta">
+          <span>${formatDate(i.submitted_at)}</span>
+          <span class="badge badge-${i.status}">${i.status}</span>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function renderPagination(t, limit) {
+    const pages = Math.ceil(t / limit);
+    const el = document.getElementById('pagination');
+    if (pages <= 1) { el.innerHTML = ''; return; }
+    el.innerHTML = `
+      <button onclick="goPage(${currentPage - 1})" ${currentPage <= 1 ? 'disabled' : ''}>&larr;</button>
+      <span>Page ${currentPage} of ${pages}</span>
+      <button onclick="goPage(${currentPage + 1})" ${currentPage >= pages ? 'disabled' : ''}>&rarr;</button>
+    `;
+  }
+
+  function goPage(p) { currentPage = p; loadList(); }
+
+  function setFilter(btn, status) {
+    document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = status;
+    currentPage = 1;
+    loadList();
+  }
+
+  function debounceSearch() {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => { currentPage = 1; loadList(); }, 300);
+  }
+
+  // ── Detail ────────────────────────────────────────────────────────────────
+  async function selectIntake(id) {
+    selectedId = id;
+    document.querySelectorAll('.intake-item').forEach(el => {
+      el.classList.toggle('selected', parseInt(el.onclick.toString().match(/\d+/)?.[0]) === id);
+    });
+    // Re-render list to update selection highlight
+    loadList();
+
+    document.getElementById('detailEmpty').style.display = 'none';
+    document.getElementById('detailContent').style.display = 'none';
+    document.getElementById('detailContent').innerHTML = '<div style="padding:40px;text-align:center;color:#9ca3af">Loading...</div>';
+    document.getElementById('detailContent').style.display = 'block';
+
+    const res = await fetch(`${API}/intakes/${id}`, { headers: headers() });
+    if (!res.ok) { document.getElementById('detailContent').innerHTML = '<div style="padding:40px;color:#dc2626">Failed to load.</div>'; return; }
+    const intake = await res.json();
+    renderDetail(intake);
+  }
+
+  function renderDetail(intake) {
+    const d = intake.data || {};
+    const el = document.getElementById('detailContent');
+
+    el.innerHTML = `
+      <div class="detail-topbar">
+        <div>
+          <div class="detail-salon">${esc(intake.salon_name || 'Unnamed Salon')}</div>
+          <div class="detail-owner">${esc(intake.owner_name || '')} &middot; ${esc(intake.owner_email || '')} &middot; ${esc(intake.phone || '')} &middot; Submitted ${formatDate(intake.submitted_at)}</div>
+        </div>
+        <div class="detail-actions">
+          <select class="status-select" onchange="updateStatus(${intake.id}, this.value)">
+            ${['new','in-progress','launched','on-hold','declined'].map(s =>
+              `<option value="${s}" ${intake.status === s ? 'selected' : ''}>${statusLabel(s)}</option>`
+            ).join('')}
+          </select>
+        </div>
+      </div>
+
+      ${card('A · The Basics', fields([
+        ['Salon Name', d.salonName],
+        ['Owner', d.ownerName],
+        ['Email', d.ownerEmail ? `<a href="mailto:${esc(d.ownerEmail)}">${esc(d.ownerEmail)}</a>` : null],
+        ['Phone', d.phone],
+        ['Address', d.address],
+        ['Instagram', d.instagram],
+        ['Facebook', d.facebook ? `<a href="${esc(d.facebook)}" target="_blank">Link</a>` : null],
+        ['TikTok', d.tiktok],
+        ['Existing Website', d.existingWebsite ? `<a href="${esc(d.existingWebsite)}" target="_blank">${esc(d.existingWebsite)}</a>` : null],
+        ['Google Business', d.googleBusiness ? `<a href="${esc(d.googleBusiness)}" target="_blank">Link</a>` : null],
+      ]))}
+
+      ${card('B · Hours', fields([
+        ['Schedule', d.hoursPreset === 'custom' ? 'Custom' : d.hoursPreset],
+        ...(d.hoursPreset === 'custom' ? [
+          ['Mon', d.monHours], ['Tue', d.tueHours], ['Wed', d.wedHours],
+          ['Thu', d.thuHours], ['Fri', d.friHours], ['Sat', d.satHours], ['Sun', d.sunHours],
+        ] : []),
+        ['Notes', d.hoursNotes],
+      ]))}
+
+      ${card('C · Services', `
+        ${svcSection('Hair Cuts', d.svc_haircuts)}
+        ${svcSection('Color Services', d.svc_color)}
+        ${svcSection('Treatments', d.svc_treatments)}
+        ${svcSection('Styling', d.svc_styling)}
+        ${svcSection('Extensions', d.svc_extensions)}
+        ${d.svcCustom ? `<div style="margin-top:12px"><div class="label">Custom Services</div><div class="value" style="white-space:pre-wrap">${esc(d.svcCustom)}</div></div>` : ''}
+        ${d.discounts?.length ? `<div style="margin-top:12px"><div class="label">Discounts</div>${tagList(d.discounts)}</div>` : ''}
+        ${d.discountDetails ? `<div style="margin-top:8px"><div class="label">Discount Details</div><div class="value">${esc(d.discountDetails)}</div></div>` : ''}
+      `)}
+
+      ${teamCard(d)}
+
+      ${card('E · Brand & Vibe', fields([
+        ['Logo', d.logo],
+        ['Brand Colors', d.brandColors],
+        ['Hex Codes', d.hexCodes],
+        ['Vibe', d.vibe],
+        ['Tone', d.tone],
+        ['Tagline', d.tagline],
+        ['Inspired By', d.inspiredBy],
+        ['Photo Folder', d.photoFolder ? `<a href="${esc(d.photoFolder)}" target="_blank">Open folder</a>` : null],
+      ]))}
+
+      ${card('F · Policies', fields([
+        ['Cancellation', d.cancelNotice],
+        ['No-Show Fee', d.noShowFee],
+        ['Deposit', d.deposit],
+        ['Deposit Amount', d.depositAmount],
+        ['Children', d.children],
+        ['Pets', d.pets],
+        ['Walk-ins', d.walkIns],
+        ['Payment', null],
+      ], d.payment?.length ? `<div style="margin-top:4px">${tagList(d.payment)}</div>` : '')}
+
+      ${card('G · Chatbot', fields([
+        ['Bot Name', d.botName === 'Other' ? d.botNameCustom : d.botName],
+        ['Personality', d.botPersonality],
+        ['Escalation', d.botEscalation],
+      ]))}
+
+      ${card('H · FAQs', d.faqs?.length ? tagList(d.faqs) : '<span class="value-empty">None selected</span>')}
+
+      ${card('I · Email & SMS', `
+        ${d.autoFlows?.length ? `<div>${tagList(d.autoFlows)}</div>` : ''}
+        ${fields([
+          ['Referral Reward', d.referralReward],
+          ['Birthday Discount', d.birthdayDiscount],
+          ['Promos', d.promos],
+          ['SMS Window', d.smsWindow],
+        ])}
+      `)}
+
+      ${card('J · Voice Bot', fields([
+        ['Voice Bot', d.voiceBot],
+        ['Voice', d.voicePreference],
+        ['Business Phone', d.businessPhone],
+        ['Forward Phone', d.forwardPhone],
+        ['Languages', d.voiceLang],
+      ]))}
+
+      ${card('K · What They Have', d.existing?.length ? tagList(d.existing) : '<span class="value-empty">Nothing checked</span>')}
+
+      ${card('L · Goals', fields([
+        ['Top Goal', d.goal1],
+        ['Frustration', d.frustration],
+        ['Success Vision', d.successVision],
+        ['Anything Else', d.anythingElse],
+      ]))}
+
+      <div class="detail-card">
+        <h3>Internal Notes</h3>
+        <textarea class="notes-area" id="notesArea" placeholder="Add notes about this client...">${esc(intake.notes || '')}</textarea>
+        <div class="notes-save">
+          <button class="btn btn-purple btn-sm" onclick="saveNotes(${intake.id})">Save Notes</button>
+        </div>
+      </div>
+    `;
+  }
+
+  // ── Helpers ───────────────────────────────────────────────────────────────
+  function card(title, content) {
+    return `<div class="detail-card"><h3>${title}</h3>${content}</div>`;
+  }
+
+  function fields(pairs, extra = '') {
+    const rows = pairs.filter(([, v]) => v != null && v !== '').map(([label, val]) =>
+      `<div class="field-pair"><div class="label">${label}</div><div class="value">${val}</div></div>`
+    ).join('');
+    return `<div class="field-grid">${rows}</div>${extra}`;
+  }
+
+  function svcSection(title, arr) {
+    if (!arr?.length) return '';
+    return `<div style="margin-bottom:10px"><div class="label" style="margin-bottom:6px">${title}</div>${tagList(arr)}</div>`;
+  }
+
+  function tagList(arr) {
+    if (!arr?.length) return '';
+    const items = Array.isArray(arr) ? arr : arr.split(',').map(s => s.trim());
+    return `<div class="tag-list">${items.map(t => `<span class="tag">${esc(t)}</span>`).join('')}</div>`;
+  }
+
+  function teamCard(d) {
+    const stylists = [];
+    for (let i = 1; i <= 6; i++) {
+      if (d[`stylist${i}_name`]) stylists.push({
+        name: d[`stylist${i}_name`], title: d[`stylist${i}_title`],
+        exp: d[`stylist${i}_exp`], bio: d[`stylist${i}_bio`],
+        specialties: d[`stylist${i}_specialties`], photo: d[`stylist${i}_photo`],
+      });
+    }
+    if (!stylists.length && !d.teamSize) return '';
+    const rows = stylists.map((s, i) => `
+      <div style="background:var(--gray-100);border-radius:8px;padding:12px;margin-bottom:8px">
+        <div style="font-weight:600;margin-bottom:4px">${esc(s.name)} <span style="font-weight:400;color:#6b7280">${esc(s.title || '')}</span></div>
+        ${s.exp ? `<div style="font-size:12px;color:#6b7280;margin-bottom:4px">${esc(s.exp)}</div>` : ''}
+        ${s.specialties?.length ? tagList(s.specialties) : ''}
+        ${s.bio ? `<div style="font-size:12px;margin-top:6px;color:#374151">${esc(s.bio)}</div>` : ''}
+        ${s.photo ? `<div style="font-size:12px;color:#6b7280;margin-top:4px">Photo: ${esc(s.photo)}</div>` : ''}
+      </div>
+    `).join('');
+    return card('D · Team', `
+      ${d.teamSize ? `<div class="field-pair" style="margin-bottom:12px"><div class="label">Team Size</div><div class="value">${esc(d.teamSize)}</div></div>` : ''}
+      ${rows}
+      ${d.extraStylists ? `<div class="field-pair"><div class="label">Additional Stylists</div><div class="value" style="white-space:pre-wrap">${esc(d.extraStylists)}</div></div>` : ''}
+    `);
+  }
+
+  async function updateStatus(id, status) {
+    await fetch(`${API}/intakes/${id}`, {
+      method: 'PATCH',
+      headers: headers(),
+      body: JSON.stringify({ status }),
+    });
+    loadList();
+  }
+
+  async function saveNotes(id) {
+    const notes = document.getElementById('notesArea').value;
+    const btn = document.querySelector(`[onclick="saveNotes(${id})"]`);
+    btn.textContent = 'Saving...';
+    btn.disabled = true;
+    await fetch(`${API}/intakes/${id}`, {
+      method: 'PATCH',
+      headers: headers(),
+      body: JSON.stringify({ notes }),
+    });
+    btn.textContent = 'Saved';
+    setTimeout(() => { btn.textContent = 'Save Notes'; btn.disabled = false; }, 1500);
+  }
+
+  function statusLabel(s) {
+    return { new: 'New', 'in-progress': 'In Progress', launched: 'Launched', 'on-hold': 'On Hold', declined: 'Declined' }[s] || s;
+  }
+
+  function formatDate(iso) {
+    return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+
+  function esc(str) {
+    if (!str) return '';
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+[
+  {
+    "id": "rev-001",
+    "name": "Emily R.",
+    "rating": 5,
+    "text": "Sophia did the most gorgeous balayage on my hair! I've never gotten so many compliments. The salon atmosphere is so relaxing and everyone is incredibly friendly.",
+    "date": "2026-03-10",
+    "service": "Balayage"
+  },
+  {
+    "id": "rev-002",
+    "name": "Marcus T.",
+    "rating": 5,
+    "text": "James is hands down the best barber/stylist I've ever been to. He took the time to understand exactly what I wanted and nailed it. Will definitely be coming back!",
+    "date": "2026-03-05",
+    "service": "Haircut"
+  },
+  {
+    "id": "rev-003",
+    "name": "Priya S.",
+    "rating": 4,
+    "text": "Got a gel manicure from Aaliyah and it looks amazing! It's been two weeks and still no chips. The only reason for 4 stars is the wait was a bit long, but the result was worth it.",
+    "date": "2026-02-28",
+    "service": "Gel Nails"
+  },
+  {
+    "id": "rev-004",
+    "name": "Jessica M.",
+    "rating": 5,
+    "text": "Olivia did my bridal makeup and I cried happy tears (which didn't ruin a thing!). She made me feel like an absolute queen on my wedding day. Cannot recommend enough!",
+    "date": "2026-02-20",
+    "service": "Bridal Makeup"
+  },
+  {
+    "id": "rev-005",
+    "name": "David K.",
+    "rating": 4,
+    "text": "Had a facial with the LED light therapy add-on. My skin has never felt so smooth and refreshed. Great value for the quality of service. Booking again next month!",
+    "date": "2026-02-15",
+    "service": "Facial"
+  }
+]

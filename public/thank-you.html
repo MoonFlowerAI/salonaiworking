@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>Payment Confirmed · MoonFlower AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --purple: #5B2C87;
+      --purple-light: #7b3fb5;
+      --gold: #D4A017;
+      --lavender: #E8DFF5;
+      --ink: #1A1A2E;
+      --cream: #faf3e0;
+      --gray-100: #f3f4f6;
+      --gray-500: #6b7280;
+      --gray-600: #4b5563;
+      --green: #059669;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Poppins', sans-serif; background: var(--cream); color: var(--ink); min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; }
+    .card { background: white; border-radius: 20px; border: 1px solid var(--lavender); padding: 56px 40px; max-width: 540px; width: 100%; text-align: center; box-shadow: 0 4px 24px rgba(91,44,135,0.08); }
+    .icon { font-size: 64px; margin-bottom: 20px; }
+    h1 { font-family: 'Playfair Display', serif; font-size: 32px; color: var(--purple); margin-bottom: 12px; }
+    .subtitle { font-size: 15px; color: var(--gray-600); margin-bottom: 32px; line-height: 1.7; }
+    .steps { text-align: left; background: var(--gray-100); border-radius: 12px; padding: 20px 24px; margin: 0 auto 32px; }
+    .steps li { font-size: 14px; color: var(--ink); margin-bottom: 10px; padding-left: 4px; display: flex; align-items: flex-start; gap: 10px; }
+    .steps li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+    .badge { display: inline-block; background: var(--lavender); color: var(--purple); font-size: 13px; font-weight: 600; border-radius: 20px; padding: 4px 14px; margin-bottom: 28px; }
+    .btn { display: inline-block; background: var(--purple); color: white; font-family: 'Poppins', sans-serif; font-size: 15px; font-weight: 600; padding: 13px 32px; border-radius: 10px; text-decoration: none; transition: background 0.2s; }
+    .btn:hover { background: var(--purple-light); }
+    footer { margin-top: 32px; font-size: 13px; color: var(--gray-500); }
+    footer a { color: var(--gray-600); }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="icon">🎉</div>
+    <h1>You're officially in!</h1>
+    <div id="tierBadge" class="badge"></div>
+    <p class="subtitle">Your setup token was received. We're excited to build your AI-powered salon experience.</p>
+
+    <ol class="steps" style="list-style:none;">
+      <li>Token received &amp; applied toward your setup fee</li>
+      <li>Confirmation email on its way to you now</li>
+      <li>We'll reach out within 1 business day with your kickoff call link</li>
+      <li>Service agreement sent for e-signature</li>
+    </ol>
+
+    <a href="/salonai" class="btn">Back to MoonFlower AI</a>
+  </div>
+
+  <footer>
+    Questions? <a href="mailto:hello@moonflowerai.com">hello@moonflowerai.com</a>
+  </footer>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const tier = params.get('tier') || 'basic';
+    const salon = params.get('salon') || '';
+    const tierLabels = { basic: 'Basic Plan', pro: 'Pro Plan', premium: 'Premium Plan' };
+    const badge = document.getElementById('tierBadge');
+    badge.textContent = (salon ? salon + ' · ' : '') + (tierLabels[tier] || 'Basic Plan');
+  </script>
+</body>
+</html>
